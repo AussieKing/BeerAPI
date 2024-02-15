@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj": {}
+    "/Users/freddydordoni/BeerAPI/BeerAPI.csproj": {}
   },
   "projects": {
-    "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj": {
+    "/Users/freddydordoni/BeerAPI/BeerAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj",
+        "projectUniqueName": "/Users/freddydordoni/BeerAPI/BeerAPI.csproj",
         "projectName": "BeerAPI",
-        "projectPath": "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj",
+        "projectPath": "/Users/freddydordoni/BeerAPI/BeerAPI.csproj",
         "packagesPath": "/Users/freddydordoni/.nuget/packages/",
-        "outputPath": "/Users/freddydordoni/C#/BeerAPI/obj/",
+        "outputPath": "/Users/freddydordoni/BeerAPI/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/freddydordoni/.nuget/NuGet/NuGet.Config"

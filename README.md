@@ -1,0 +1,79 @@
+# BeerAPI
+
+## Description
+
+[![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+An API implementation of CRUD operations using C#.
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Technologies Used](#technologies-used)
+- [Usage](#usage)
+- [Installation](#installation)
+- [License](#license)
+- [Author](#author)
+
+## Overview
+
+This API application was designed to return info on Beer objects in a database. It was created using C# and .NET Core. The application uses a Model-View-Controller (MVC) structure. The application can be tested using Postman or Insomnia
+
+## Technologies Used
+
+  - C#
+  - .NET Core
+  - ASP.NET Core
+  - Visual Studio Code
+  - Git
+
+## Usage
+
+This Application is not designed to work with a front-end. It is designed to be tested using Insomnia or Postman.
+
+![Insomnia Screenshot](<Screenshot 2024-02-15 at 10.39.05 am.png>)
+
+The API routes are as below.
+Please make sure to add to your usual server url.
+
+```
+http://localhost:5244/
+```
+
+### Routes
+
+```
+GET ..api/beers/{id} - returns the beer with the specified {id}
+POST ../api/beers - creates a user by providing Name, Price, and PromoPrice (optional)
+PUT ../api/api/beers/{id}/promo-price - updates a beer promo price by specifying their id
+DELETE ..api/beers/{id} - deletes a beer by specifying their id
+```
+
+
+## Installation
+
+1. Clone the Repository from [GitHub](https://github.com/AussieKing/BeerAPI.git) by using the Git Clone command.
+2. Open the cloned repository in your code editor of choice (I used VS Code).
+3. Open the integrated terminal and run the following command to install the dependencies:
+
+``` bash
+dotnet build
+dotnet watch run
+```
+
+4. If you're on Mac, also run the following in the terminal (from the root directory)
+
+```bash
+dotnet dev-certs https --trust 
+```
+
+5. Use Insomnia to test the api routes.
+
+
+## License
+
+This application is covered under the MIT license. Please refer to the document titled [LICENSE](LICENSE).
+
+## Author
+
+This application was written and developed by Freddy Dordoni.

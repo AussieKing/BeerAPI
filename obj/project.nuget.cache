@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "bunT/RIGlRT3tIEhcC1JcDkRgdaeXFh3r77npc7h6o3TOPQ+ZYzuVwcRtqULN5pNWxLSuUgierTL6hESGD2ddA==",
+  "dgSpecHash": "ytQwdsjn9W2j50msfX+fvY6FMqyIhzZRx1U47fp+9rGxPaxQmFJG9HMBdz8ykqsDIeupTR08Dl25vbCZV40QHg==",
   "success": true,
-  "projectFilePath": "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj",
+  "projectFilePath": "/Users/freddydordoni/BeerAPI/BeerAPI.csproj",
   "expectedPackageFiles": [
     "/Users/freddydordoni/.nuget/packages/microsoft.aspnetcore.openapi/8.0.1/microsoft.aspnetcore.openapi.8.0.1.nupkg.sha512",
     "/Users/freddydordoni/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",

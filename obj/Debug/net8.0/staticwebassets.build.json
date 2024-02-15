@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "sRbxgoyD0YbER6mlcMmifkPyrHhAJJvzakPwFQKVYuw=",
+  "Source": "BeerAPI",
+  "BasePath": "_content/BeerAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

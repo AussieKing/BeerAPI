@@ -1,11 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "bunT/RIGlRT3tIEhcC1JcDkRgdaeXFh3r77npc7h6o3TOPQ+ZYzuVwcRtqULN5pNWxLSuUgierTL6hESGD2ddA==",
+  "dgSpecHash": "5S8ZwfRlRZp0iH51tdhkGLGL3IcnW+UapLYIDXmTt1ct8/eb5cxisoAMoVi3kTp4ApZZ/AEw5IL4sMRGc6If/A==",
   "success": true,
   "projectFilePath": "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj",
   "expectedPackageFiles": [
+    "/Users/freddydordoni/.nuget/packages/fluentvalidation/11.5.1/fluentvalidation.11.5.1.nupkg.sha512",
+    "/Users/freddydordoni/.nuget/packages/fluentvalidation.aspnetcore/11.3.0/fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
+    "/Users/freddydordoni/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.5.1/fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
     "/Users/freddydordoni/.nuget/packages/microsoft.aspnetcore.openapi/8.0.1/microsoft.aspnetcore.openapi.8.0.1.nupkg.sha512",
     "/Users/freddydordoni/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "/Users/freddydordoni/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/2.1.0/microsoft.extensions.dependencyinjection.abstractions.2.1.0.nupkg.sha512",
     "/Users/freddydordoni/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
     "/Users/freddydordoni/.nuget/packages/swashbuckle.aspnetcore/6.4.0/swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "/Users/freddydordoni/.nuget/packages/swashbuckle.aspnetcore.swagger/6.4.0/swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",

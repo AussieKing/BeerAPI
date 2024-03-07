@@ -32,3 +32,6 @@
 /Users/freddydordoni/C#/BeerAPI/obj/Debug/net8.0/BeerAPI.pdb
 /Users/freddydordoni/C#/BeerAPI/obj/Debug/net8.0/BeerAPI.genruntimeconfig.cache
 /Users/freddydordoni/C#/BeerAPI/obj/Debug/net8.0/ref/BeerAPI.dll
+/Users/freddydordoni/C#/BeerAPI/bin/Debug/net8.0/FluentValidation.dll
+/Users/freddydordoni/C#/BeerAPI/bin/Debug/net8.0/FluentValidation.AspNetCore.dll
+/Users/freddydordoni/C#/BeerAPI/bin/Debug/net8.0/FluentValidation.DependencyInjectionExtensions.dll

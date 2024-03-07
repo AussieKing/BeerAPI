@@ -5,12 +5,13 @@
 using FluentValidation;
 using BeerAPI.Models;
 
-namespace BeerAPI.Validators // This matches the folder structure and the using directive in Program.cs
+namespace BeerAPI.Validators 
 {
-    public class BeerValidator : AbstractValidator<Beer>
+    public class BeerValidator : AbstractValidator<Beer> // Declaring the BeerValidator class, which inherits from AbstractValidator<T>, where T is the type being validated (in this case, Beer)
     {
-        public BeerValidator()
+        public BeerValidator() // Constructor function
         {
+            // Defining all rules for the Beer model below
             RuleFor(beer => beer.Name).NotEmpty().WithMessage("Beer name is required.");
             RuleFor(beer => beer.Price).GreaterThan(0).WithMessage("Price must be greater than zero.");
             RuleFor(beer => beer.PromoPrice)

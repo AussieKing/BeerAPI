@@ -10,12 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddControllers(); //! Adding this line to add support for controllers
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddTransient<IValidator<Beer>, BeerValidator>();
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddControllers(); //! Adding this line to add support for MVC controllers
+builder.Services.AddFluentValidationAutoValidation(); //!  Register FluentValidation's automatic validation. This integrates FluentValidation into the ASP.NET Core pipeline.
+builder.Services.AddTransient<IValidator<Beer>, BeerValidator>(); //! Register the BeerValidator for dependency injection, specifying that whenever IValidator<Beer> is needed, a BeerValidator should be provided.
+builder.Services.AddEndpointsApiExplorer(); // For support to API explorer
+builder.Services.AddSwaggerGen(); // For support to Swagger
 
 
 var app = builder.Build();
@@ -27,11 +26,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+
+app.UseHttpsRedirection(); // Middleware to redirect HTTP requests to HTTPS
 app.UseAuthorization(); //! Adding this line to use authorization middleware
 app.MapControllers(); //! Adding this line to map attribute-routed controllers
 
-
+// Sample data for the weather default API
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"

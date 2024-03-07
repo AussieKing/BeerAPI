@@ -1,10 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-<<<<<<< HEAD
-=======
 using System.Collections.Generic;
 using System.Linq;
->>>>>>> 43236e633e5685f12917c77abfe8f4aaa33ca8ed
 using BeerAPI.Models; // import the Beer class from the Models namespace
+using BeerAPI.Services; //! Adding this to use the BeerDescriptionService
 
 //? Step 1: CONTROLLER DECLARATION
 // Defining the BeersControllers inside the 'BeerAPI.Controllers'
@@ -23,8 +21,15 @@ namespace BeerAPI.Controllers
             new Beer { Id = 2, Name = "IPA", Price = 6.49M, PromoPrice = 3.99M }
         };
 
+        //! NEW CONSTRUCTOR INJECTION
+        public BeersController(IBeerDescriptionService beerDescriptionService)
+        {
+            _beerDescriptionService = beerDescriptionService; // Assigning the injected service to a private field
+        }
+
+
         //? Step 3: CRUD requirements 
-        //! GET REQUEST
+        // GET REQUEST
         //First operation is the return of info given a BeerId
         [HttpGet("{id}")] // we are telling the framework that this method will be called when an HTTP GET request is made to the /api/beers/{id}
         public ActionResult<Beer> GetBeerById(int id) // here ActionResult will return a <Beer> object, and the method is called GetBeerById (the parameter is the id of the beer, which is an integer)
@@ -34,10 +39,13 @@ namespace BeerAPI.Controllers
             {
                 return NotFound(); // NotFound returns 404
             }
-            return beer; // however, if the beer is found, return the beer!
-        }
 
-        //! POST REQUEST
+            //! Using the _beerDescriptionService to get the description
+            var description = _beerDescriptionService.GetDescription(beer);
+            return Ok(new { Beer = beer, Description = description }); // Return the beer and its description
+        }        
+
+        // POST REQUEST
         // Second operation is to add a new beer to the list. In order to do this, we need to accept the beer data and then add it to the list
         [HttpPost] // similarly to above, we're saying that this method will be called when an HTTP POST request is made to the /api/beers URL
         public ActionResult<Beer> AddBeer(Beer newBeer) // ActionResult returns <Beer> again, but the method here is AddBeer, and it take the Beer object, and the newBeer is the parameter
@@ -55,7 +63,7 @@ namespace BeerAPI.Controllers
             return CreatedAtAction(nameof(GetBeerById), new { id = newBeer.Id }, newBeer); // we are returning a 201 Created status code, and we are also returning the new beer!
         }
 
-        //! DELETE REQUEST
+        // DELETE REQUEST
         // Third operation is to remove a beer from the list. In order to do this, we need to accept the beer id and then remove it from the list
         [HttpDelete("{id}")] // we are saying that this method will be called when an HTTP DELETE request is made to the /api/beers/{id} URL
         public ActionResult DeleteBeer(int id) // we are returning an ActionResult, and the method is called DeleteBeer, and the parameter is the id of the beer
@@ -70,7 +78,7 @@ namespace BeerAPI.Controllers
             return NoContent(); // we return a 204 No Content status code
         }
 
-        //! PUT REQUEST
+        // PUT REQUEST
         // Fourth operation is to update a beer's promo price, and its promo cannot be less than half of the normal price.
         [HttpPut("{id}/promo-price")]  // we are stating that this method is invoked with a PUT request, at the /api/beers/{id}/promo-price URL
         public ActionResult UpdatePromoPrice(int id, [FromBody] PromoPriceUpdateRequest request)

@@ -1,7 +1,6 @@
 {
   "format": 1,
   "restore": {
-<<<<<<< HEAD
     "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj": {}
   },
   "projects": {
@@ -13,19 +12,6 @@
         "projectPath": "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj",
         "packagesPath": "/Users/freddydordoni/.nuget/packages/",
         "outputPath": "/Users/freddydordoni/C#/BeerAPI/obj/",
-=======
-    "/Users/freddydordoni/BeerAPI/BeerAPI.csproj": {}
-  },
-  "projects": {
-    "/Users/freddydordoni/BeerAPI/BeerAPI.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "/Users/freddydordoni/BeerAPI/BeerAPI.csproj",
-        "projectName": "BeerAPI",
-        "projectPath": "/Users/freddydordoni/BeerAPI/BeerAPI.csproj",
-        "packagesPath": "/Users/freddydordoni/.nuget/packages/",
-        "outputPath": "/Users/freddydordoni/BeerAPI/obj/",
->>>>>>> 43236e633e5685f12917c77abfe8f4aaa33ca8ed
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/freddydordoni/.nuget/NuGet/NuGet.Config"
@@ -52,13 +38,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-<<<<<<< HEAD
             "FluentValidation.AspNetCore": {
               "target": "Package",
               "version": "[11.3.0, )"
             },
-=======
->>>>>>> 43236e633e5685f12917c77abfe8f4aaa33ca8ed
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.1, )"

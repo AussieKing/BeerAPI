@@ -2,7 +2,6 @@
   "version": 3,
   "targets": {
     "net8.0": {
-<<<<<<< HEAD
       "FluentValidation/11.5.1": {
         "type": "package",
         "compile": {
@@ -53,8 +52,6 @@
           }
         }
       },
-=======
->>>>>>> 43236e633e5685f12917c77abfe8f4aaa33ca8ed
       "Microsoft.AspNetCore.OpenApi/8.0.1": {
         "type": "package",
         "dependencies": {
@@ -85,7 +82,6 @@
           "buildMultiTargeting/Microsoft.Extensions.ApiDescription.Server.targets": {}
         }
       },
-<<<<<<< HEAD
       "Microsoft.Extensions.DependencyInjection.Abstractions/2.1.0": {
         "type": "package",
         "compile": {
@@ -99,8 +95,6 @@
           }
         }
       },
-=======
->>>>>>> 43236e633e5685f12917c77abfe8f4aaa33ca8ed
       "Microsoft.OpenApi/1.4.3": {
         "type": "package",
         "compile": {
@@ -180,7 +174,6 @@
     }
   },
   "libraries": {
-<<<<<<< HEAD
     "FluentValidation/11.5.1": {
       "sha512": "0h1Q5lNOLLyYTWMJmyNoMqhY4CBRvvUWvJP1R4F2CnmmzuWwvB0A8aVmw5+lOuwYnwUwCRrdeMLbc81F38ahNQ==",
       "type": "package",
@@ -240,8 +233,6 @@
         "lib/netstandard2.1/FluentValidation.DependencyInjectionExtensions.xml"
       ]
     },
-=======
->>>>>>> 43236e633e5685f12917c77abfe8f4aaa33ca8ed
     "Microsoft.AspNetCore.OpenApi/8.0.1": {
       "sha512": "JF0U31SByntKEhZNC8ch3CD87BLZb5AzSujOBppLdvnjYu3W2XZvlsol5hUJfxiaHOp720cUiL6wzG8Bv0fI2Q==",
       "type": "package",
@@ -488,7 +479,6 @@
         "tools/netcoreapp2.1/System.Diagnostics.DiagnosticSource.dll"
       ]
     },
-<<<<<<< HEAD
     "Microsoft.Extensions.DependencyInjection.Abstractions/2.1.0": {
       "sha512": "8/CtASu80UIoyG+r8FstrmZW5GLtXxzoYpjj3jV0FKZCL5CiFgSH3pAmqut/dC68mu7N1bU6v0UtKKL3gCUQGQ==",
       "type": "package",
@@ -502,8 +492,6 @@
         "microsoft.extensions.dependencyinjection.abstractions.nuspec"
       ]
     },
-=======
->>>>>>> 43236e633e5685f12917c77abfe8f4aaa33ca8ed
     "Microsoft.OpenApi/1.4.3": {
       "sha512": "rURwggB+QZYcSVbDr7HSdhw/FELvMlriW10OeOzjPT7pstefMo7IThhtNtDudxbXhW+lj0NfX72Ka5EDsG8x6w==",
       "type": "package",
@@ -602,10 +590,7 @@
   },
   "projectFileDependencyGroups": {
     "net8.0": [
-<<<<<<< HEAD
       "FluentValidation.AspNetCore >= 11.3.0",
-=======
->>>>>>> 43236e633e5685f12917c77abfe8f4aaa33ca8ed
       "Microsoft.AspNetCore.OpenApi >= 8.0.1",
       "Swashbuckle.AspNetCore >= 6.4.0"
     ]
@@ -616,19 +601,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-<<<<<<< HEAD
       "projectUniqueName": "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj",
       "projectName": "BeerAPI",
       "projectPath": "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj",
       "packagesPath": "/Users/freddydordoni/.nuget/packages/",
       "outputPath": "/Users/freddydordoni/C#/BeerAPI/obj/",
-=======
-      "projectUniqueName": "/Users/freddydordoni/BeerAPI/BeerAPI.csproj",
-      "projectName": "BeerAPI",
-      "projectPath": "/Users/freddydordoni/BeerAPI/BeerAPI.csproj",
-      "packagesPath": "/Users/freddydordoni/.nuget/packages/",
-      "outputPath": "/Users/freddydordoni/BeerAPI/obj/",
->>>>>>> 43236e633e5685f12917c77abfe8f4aaa33ca8ed
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/freddydordoni/.nuget/NuGet/NuGet.Config"
@@ -655,13 +632,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
-<<<<<<< HEAD
           "FluentValidation.AspNetCore": {
             "target": "Package",
             "version": "[11.3.0, )"
           },
-=======
->>>>>>> 43236e633e5685f12917c77abfe8f4aaa33ca8ed
           "Microsoft.AspNetCore.OpenApi": {
             "target": "Package",
             "version": "[8.0.1, )"

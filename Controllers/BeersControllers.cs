@@ -1,4 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
+<<<<<<< HEAD
+=======
+using System.Collections.Generic;
+using System.Linq;
+>>>>>>> 43236e633e5685f12917c77abfe8f4aaa33ca8ed
 using BeerAPI.Models; // import the Beer class from the Models namespace
 
 //? Step 1: CONTROLLER DECLARATION

@@ -1,5 +1,6 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "5S8ZwfRlRZp0iH51tdhkGLGL3IcnW+UapLYIDXmTt1ct8/eb5cxisoAMoVi3kTp4ApZZ/AEw5IL4sMRGc6If/A==",
   "success": true,
   "projectFilePath": "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj",
@@ -10,6 +11,14 @@
     "/Users/freddydordoni/.nuget/packages/microsoft.aspnetcore.openapi/8.0.1/microsoft.aspnetcore.openapi.8.0.1.nupkg.sha512",
     "/Users/freddydordoni/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "/Users/freddydordoni/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/2.1.0/microsoft.extensions.dependencyinjection.abstractions.2.1.0.nupkg.sha512",
+=======
+  "dgSpecHash": "ytQwdsjn9W2j50msfX+fvY6FMqyIhzZRx1U47fp+9rGxPaxQmFJG9HMBdz8ykqsDIeupTR08Dl25vbCZV40QHg==",
+  "success": true,
+  "projectFilePath": "/Users/freddydordoni/BeerAPI/BeerAPI.csproj",
+  "expectedPackageFiles": [
+    "/Users/freddydordoni/.nuget/packages/microsoft.aspnetcore.openapi/8.0.1/microsoft.aspnetcore.openapi.8.0.1.nupkg.sha512",
+    "/Users/freddydordoni/.nuget/packages/microsoft.extensions.apidescription.server/6.0.5/microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+>>>>>>> 43236e633e5685f12917c77abfe8f4aaa33ca8ed
     "/Users/freddydordoni/.nuget/packages/microsoft.openapi/1.4.3/microsoft.openapi.1.4.3.nupkg.sha512",
     "/Users/freddydordoni/.nuget/packages/swashbuckle.aspnetcore/6.4.0/swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "/Users/freddydordoni/.nuget/packages/swashbuckle.aspnetcore.swagger/6.4.0/swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",

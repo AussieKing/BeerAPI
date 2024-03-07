@@ -8,7 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< HEAD
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+=======
+>>>>>>> 43236e633e5685f12917c77abfe8f4aaa33ca8ed
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>

@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
 using BeerAPI.Models; // import the Beer class from the Models namespace
 using BeerAPI.Services; //! Adding this to use the BeerDescriptionService
 
@@ -20,6 +18,7 @@ namespace BeerAPI.Controllers
             new Beer { Id = 1, Name = "Lager", Price = 5.99M }, // using the M at the end to indicate that the number is a decimal (more precise than double)
             new Beer { Id = 2, Name = "IPA", Price = 6.49M, PromoPrice = 3.99M }
         };
+        private object _beerDescriptionService;
 
         //! NEW CONSTRUCTOR INJECTION
         public BeersController(IBeerDescriptionService beerDescriptionService)
@@ -41,7 +40,7 @@ namespace BeerAPI.Controllers
             }
 
             //! Using the _beerDescriptionService to get the description
-            var description = _beerDescriptionService.GetDescription(beer);
+            var description = ((IBeerDescriptionService)_beerDescriptionService).GetDescription(beer); // Cast _beerDescriptionService to IBeerDescriptionService and call GetDescription method
             return Ok(new { Beer = beer, Description = description }); // Return the beer and its description
         }        
 

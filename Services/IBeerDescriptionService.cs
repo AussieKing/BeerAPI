@@ -7,6 +7,6 @@ namespace BeerAPI.Services
 {
     public interface IBeerDescriptionService
     {
-        string GetDescription(Beer beer);
+        string GetDescription(Models.Beer beer); // changed Beer to Models.Beer to have it recognized
     }
 }

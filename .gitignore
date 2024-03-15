@@ -1,0 +1,13 @@
+[Bb]in/
+[Oo]bj/
+[Ll]ogs/
+*.user
+*.userosscache
+*.suo
+.vs/
+*.nupkg
+_ReSharper*/
+.idea/
+*.dbmdl
+*.db_schema
+.DS_Store

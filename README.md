@@ -15,6 +15,7 @@ An API implementation of CRUD operations using C#.
 - [License](#license)
 - [Author](#author)
 - [Progress](#progress)
+- [User Story](#user-story)
 
 ## Overview
 
@@ -82,7 +83,7 @@ This application is covered under the MIT license. Please refer to the document 
 
 This application was written and developed by Freddy Dordoni.
 
-	## Progress
+## Progress
 
 	### DependencyInjection - implementation
 Next, we can try to expand the DI use. 
@@ -108,16 +109,7 @@ Could be some of these:
 
 Ask her if this what she meant, as the above would improve maintainability, and testing.
 
-	### NOTES
-
-We write test cases against Services, as this is where all the logic is. Pnly dealing with the interface allows for more flexibility.
-Every unit testing consists of Setup, Act, Verify (3 steps),
-Use test explores in VS.
-
-	### TODO:
-Write function in a service for the Story 1 to be satisfied, using the Beer list from my database.
-
-	#### USER STORY
+## USER STORY
 You are a developer in our e-commerce team. We are tasked to build the Shopping Trolley
 feature. The requirements given as a user stories as below.
 Your task is to design and develop this feature. 
@@ -139,7 +131,7 @@ Demonstrate your strengths in these aspects.
 
 	#### Trolley Use Cases:
 User Story 1:
-As a customer I want to add / remove items to the trolley so that I can purchase the drinks I
+As a customer I want to add / remove items to the trolley so that I can purchase the drinks
 want.
 
 	#### Acceptance Criteria:
@@ -153,7 +145,16 @@ want.
 	b. When they remove that item from the trolley
 	c. Then the trolley count shows
 
-			#### Pseudocoding:
+			### NOTES
+
+We write test cases against Services, as this is where all the logic is. Only dealing with the interface allows for more flexibility.
+Every unit testing consists of Setup, Act, Verify (3 steps),
+Use test explores in VS.
+
+	#### TASK:
+Write function in a service for the Story 1 to be satisfied, using the Beer list from my database.
+
+	#### Pseudocoding:
 - Initialize an empty list of `TrolleyItems` (class TrolleyService)
 - Create a function to <find> the TrolleyItem in the list via the beerId -> if found, increment its quantity -> else, create a new TrolleyItem with the beerId and qty (=1) -> add the TrolleyItem in the list.
 - Create another function to <remove> the TrolleyItem in the list via the beerId -> if found, decrement its quantity -> else (if qty is 0), remove the TrolleyItem from the list.
@@ -166,3 +167,15 @@ I won't need a model for beers as I already have one, but I will need a new mode
 I'll then need to create a new Service to manage the trolley logic above.
 Then, I'll have to register the Trolley Service in Program.cs.
 By doing this, I will have the ability to test the logic in the Services, whilst decoupling it from the Controllers (which, instead, will just do the routing and the requests handling)
+
+	#### Progress:
+- Trolley and TrolleyItem models provide the necessary structure for representing a shopping trolley and its items, each with a reference to a Beer and a quantity. 
+- ITrolleyService interface defines the contract for the trolley service, specifying methods for adding and removing items, getting the item count, and retrieving the trolley itself. any class implementing this interface, like the TrolleyService, will provide these functionalities.
+- TrolleyService has the logic itself:
+	- AddItem: adds a new TrolleyItem if it's not already in the trolley or increments the quantity of an existing item. 
+	- RemoveItem: decrements the quantity of an item or removes it from the trolley if its quantity reaches 0.
+	- GetItemCount: gives the total count of all items in the trolley by summing up their quantities.
+	- GetTrolley: returns the current state of the trolley.
+
+			#### TODO:
+- Print on the Console the state of the trolley (including item counts).

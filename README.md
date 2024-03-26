@@ -176,6 +176,8 @@ By doing this, I will have the ability to test the logic in the Services, whilst
 	- RemoveItem: decrements the quantity of an item or removes it from the trolley if its quantity reaches 0.
 	- GetItemCount: gives the total count of all items in the trolley by summing up their quantities.
 	- GetTrolley: returns the current state of the trolley.
+- PrintTrolleyState prints the status of the trolley.
 
 #### TODO:
-- Print on the Console the state of the trolley (including item counts).
+- Invoke the service methods within a designated testing area (to be creaed, like Gurdip showed me today with Setup, Act, Verify), to test TrolleyService;
+- 

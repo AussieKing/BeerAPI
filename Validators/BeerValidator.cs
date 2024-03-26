@@ -1,17 +1,12 @@
-// Working with FluentValidation
-// Step 1: Create a new file called BeerValidator.cs in the Validators folder
-// Step 2: Add the validation rules for the Beer model using FluentValidation
-
 using FluentValidation;
 using BeerAPI.Models;
 
 namespace BeerAPI.Validators 
 {
-    public class BeerValidator : AbstractValidator<Beer> // Declaring the BeerValidator class, which inherits from AbstractValidator<T>, where T is the type being validated (in this case, Beer)
+    public class BeerValidator : AbstractValidator<Beer> 
     {
-        public BeerValidator() // Constructor function
+        public BeerValidator() 
         {
-            // Defining all rules for the Beer model below
             RuleFor(beer => beer.Name).NotEmpty().WithMessage("Beer name is required.");
             RuleFor(beer => beer.Price).GreaterThan(0).WithMessage("Price must be greater than zero.");
             When(beer => beer.PromoPrice != null, () => {

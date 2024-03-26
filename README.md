@@ -85,7 +85,7 @@ This application was written and developed by Freddy Dordoni.
 
 ## Progress
 
-	### DependencyInjection - implementation
+### DependencyInjection - implementation
 Next, we can try to expand the DI use. 
 For example, if we'll start to build a database, we could start a logic where the reposisotry can be injected into services/controllers (like I did with IBeerDescriptionService)
 DI can also be used more in order for better logging (ILogger);
@@ -96,7 +96,7 @@ Structure:
 - Logging: read up on `ILogger<T>`
 - Config: we could define a new Service Options class (`BeerServiceOptions.cs`), to represent the configuration settings that I want to inject. This would go in `Configurations` folder I assume? We can also modify the Contrctor
 
-		### Calling the Controller and Testing
+### Calling the Controller and Testing
 Gurdip mentioned "calling the controller".
 Ask her if she meant how the controllers are called during testing? Or how they are used/designed to handle request in the App?
 Could be some of these:
@@ -129,12 +129,12 @@ The user stories build up to provide richer experience with each adding some enh
 We care a lot about clean design, clean code, good tests and continuous delivery practices.
 Demonstrate your strengths in these aspects.
 
-	#### Trolley Use Cases:
+#### Trolley Use Cases:
 User Story 1:
 As a customer I want to add / remove items to the trolley so that I can purchase the drinks
 want.
 
-	#### Acceptance Criteria:
+#### Acceptance Criteria:
 1. Customers can add the same item more than once. For MVP, there is no upper limit on the number of items or quantity they add
 2. When customer adds an item to the trolley, they can see the count of items incremented.
 	a. Given customer has no item in the trolley
@@ -145,16 +145,16 @@ want.
 	b. When they remove that item from the trolley
 	c. Then the trolley count shows
 
-			### NOTES
+### NOTES
 
 We write test cases against Services, as this is where all the logic is. Only dealing with the interface allows for more flexibility.
 Every unit testing consists of Setup, Act, Verify (3 steps),
 Use test explores in VS.
 
-	#### TASK:
+#### TASK:
 Write function in a service for the Story 1 to be satisfied, using the Beer list from my database.
 
-	#### Pseudocoding:
+#### Pseudocoding:
 - Initialize an empty list of `TrolleyItems` (class TrolleyService)
 - Create a function to <find> the TrolleyItem in the list via the beerId -> if found, increment its quantity -> else, create a new TrolleyItem with the beerId and qty (=1) -> add the TrolleyItem in the list.
 - Create another function to <remove> the TrolleyItem in the list via the beerId -> if found, decrement its quantity -> else (if qty is 0), remove the TrolleyItem from the list.
@@ -168,7 +168,7 @@ I'll then need to create a new Service to manage the trolley logic above.
 Then, I'll have to register the Trolley Service in Program.cs.
 By doing this, I will have the ability to test the logic in the Services, whilst decoupling it from the Controllers (which, instead, will just do the routing and the requests handling)
 
-	#### Progress:
+#### Progress:
 - Trolley and TrolleyItem models provide the necessary structure for representing a shopping trolley and its items, each with a reference to a Beer and a quantity. 
 - ITrolleyService interface defines the contract for the trolley service, specifying methods for adding and removing items, getting the item count, and retrieving the trolley itself. any class implementing this interface, like the TrolleyService, will provide these functionalities.
 - TrolleyService has the logic itself:
@@ -177,5 +177,5 @@ By doing this, I will have the ability to test the logic in the Services, whilst
 	- GetItemCount: gives the total count of all items in the trolley by summing up their quantities.
 	- GetTrolley: returns the current state of the trolley.
 
-			#### TODO:
+#### TODO:
 - Print on the Console the state of the trolley (including item counts).

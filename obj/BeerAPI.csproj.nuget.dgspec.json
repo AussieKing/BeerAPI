@@ -1,25 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj": {}
+    "C:\\Users\\1133940\\Desktop\\BeerAPI\\BeerAPI.csproj": {}
   },
   "projects": {
-    "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj": {
+    "C:\\Users\\1133940\\Desktop\\BeerAPI\\BeerAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj",
+        "projectUniqueName": "C:\\Users\\1133940\\Desktop\\BeerAPI\\BeerAPI.csproj",
         "projectName": "BeerAPI",
-        "projectPath": "/Users/freddydordoni/C#/BeerAPI/BeerAPI.csproj",
-        "packagesPath": "/Users/freddydordoni/.nuget/packages/",
-        "outputPath": "/Users/freddydordoni/C#/BeerAPI/obj/",
+        "projectPath": "C:\\Users\\1133940\\Desktop\\BeerAPI\\BeerAPI.csproj",
+        "packagesPath": "C:\\Users\\1133940\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\1133940\\Desktop\\BeerAPI\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/freddydordoni/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\1133940\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -32,6 +39,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -70,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

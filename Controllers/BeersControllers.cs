@@ -18,6 +18,7 @@ namespace BeerAPI.Controllers
             new Beer { Id = 1, Name = "Lager", Price = 5.99M }, // using the M at the end to indicate that the number is a decimal (more precise than double)
             new Beer { Id = 2, Name = "IPA", Price = 6.49M, PromoPrice = 3.99M }
         };
+
         private object _beerDescriptionService;
 
         //! NEW CONSTRUCTOR INJECTION

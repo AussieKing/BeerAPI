@@ -14,6 +14,7 @@ An API implementation of CRUD operations using C#.
 - [Installation](#installation)
 - [License](#license)
 - [Author](#author)
+- [Progress](#progress)
 
 ## Overview
 
@@ -80,3 +81,23 @@ This application is covered under the MIT license. Please refer to the document 
 ## Author
 
 This application was written and developed by Freddy Dordoni.
+
+## Progress
+### DependencyInjection - implementation
+Next, we can try to expand the DI use. 
+For example, if we'll start to build a database, we could start a logic where the reposisotry can be injected into services/controllers (like I did with IBeerDescriptionService)
+DI can also be used more in order for better logging (ILogger);
+Also, if we want to test services that usually would rely on API keys, we could inject the `IOptions<T>` (with "T" being the configuratiion class to swap for the testing).
+
+### Calling the Controller
+Gurdip mentioned "calling the controller".
+Ask her if she meant how the controllers are called during testing? Or how they are used/designed to handle request in the App?
+Could be some of these:
+- Controller Unit Testing : 
+	Basically creating a unit test to the controller, to mock the dependency. We would simulate calling the controller, to test the responses.
+- Integration Testing :
+	Reading up, I foumd we cuold use `WebApplicationFactory` or `TestServer ` to simulate the app's env. This way we could send HTTP requests (like a client would do), calling the controllers to verify the app behaviour.
+- Endpoint Routing :
+	Checking that the config of our controllers is configured ok for routing (`[Route]`, `[HttpGet]`, etc).
+
+Ask her if this what she meant, as the above would improve maintainability, and testing.

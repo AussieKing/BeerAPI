@@ -29,7 +29,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
 app.UseHttpsRedirection(); // Middleware to redirect HTTP requests to HTTPS
 app.UseAuthorization(); //! Adding this line to use authorization middleware
 app.MapControllers(); //! Adding this line to map attribute-routed controllers

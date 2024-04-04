@@ -72,3 +72,14 @@ C:\Users\1133940\Desktop\BeerAPI\obj\Debug\net8.0\refint\BeerAPI.dll
 C:\Users\1133940\Desktop\BeerAPI\obj\Debug\net8.0\BeerAPI.pdb
 C:\Users\1133940\Desktop\BeerAPI\obj\Debug\net8.0\BeerAPI.genruntimeconfig.cache
 C:\Users\1133940\Desktop\BeerAPI\obj\Debug\net8.0\ref\BeerAPI.dll
+C:\Users\1133940\Documents\BeerAPI\obj\Debug\net8.0\BeerAPI.csproj.AssemblyReference.cache
+C:\Users\1133940\Documents\BeerAPI\obj\Debug\net8.0\BeerAPI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\1133940\Documents\BeerAPI\obj\Debug\net8.0\BeerAPI.AssemblyInfoInputs.cache
+C:\Users\1133940\Documents\BeerAPI\obj\Debug\net8.0\BeerAPI.AssemblyInfo.cs
+C:\Users\1133940\Documents\BeerAPI\obj\Debug\net8.0\BeerAPI.csproj.CoreCompileInputs.cache
+C:\Users\1133940\Documents\BeerAPI\obj\Debug\net8.0\BeerAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\1133940\Documents\BeerAPI\obj\Debug\net8.0\BeerAPI.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\1133940\Documents\BeerAPI\obj\Debug\net8.0\BeerAPI.sourcelink.json
+C:\Users\1133940\Documents\BeerAPI\obj\Debug\net8.0\BeerAPI.dll
+C:\Users\1133940\Documents\BeerAPI\obj\Debug\net8.0\refint\BeerAPI.dll
+C:\Users\1133940\Documents\BeerAPI\obj\Debug\net8.0\BeerAPI.pdb

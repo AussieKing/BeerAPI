@@ -26,7 +26,7 @@ namespace BeerAPI.Controllers
 
         // GET REQUEST: return of info given a BeerId
         [HttpGet("{id}")] 
-        public ActionResult<Beer> GetBeerById(int id) 
+        public IActionResult GetBeerById(int id) 
         {
             var beer = beers.FirstOrDefault(b => b.Id == id); 
             if (beer == null) 

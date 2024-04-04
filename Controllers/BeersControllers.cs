@@ -16,6 +16,8 @@ namespace BeerAPI.Controllers
             new Beer { Id = 2, Name = "IPA", Price = 6.49M, PromoPrice = 3.99M }
         };
 
+        private static int _highestBeerId = beers.Max(b => b.Id);
+
         private IBeerDescriptionService _beerDescriptionService;
 
         //! INJECTION

@@ -16,7 +16,7 @@ namespace BeerAPI.Controllers
             new Beer { Id = 2, Name = "IPA", Price = 6.49M, PromoPrice = 3.99M }
         };
 
-        private object _beerDescriptionService;
+        private IBeerDescriptionService _beerDescriptionService;
 
         //! INJECTION
         public BeersController(IBeerDescriptionService beerDescriptionService)

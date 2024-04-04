@@ -5,7 +5,7 @@ namespace BeerAPI.Services
     public interface ITrolleyService
     {
         void AddItem(Beer beer);
-        void RemoveItem(int beerId);
+        bool RemoveItem(int beerId);
         int GetItemCount();
         Trolley GetTrolley();
     }

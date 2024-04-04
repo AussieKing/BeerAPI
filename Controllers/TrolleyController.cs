@@ -34,7 +34,11 @@ namespace BeerAPI.Controllers
         [HttpPost("remove/{beerId}")]
         public IActionResult RemoveItemFromTrolley(int beerId)
         {
-            _trolleyService.RemoveItem(beerId);
+            bool itemRemoved = _trolleyService.RemoveItem(beerId);
+            if (!itemRemoved)
+            {
+                return NotFound(new {message = "Trolley is empty or item not found!" });
+            }
             return Ok(new { message = "Item removed from trolley.", trolley = _trolleyService.GetTrolley() });
         }
 

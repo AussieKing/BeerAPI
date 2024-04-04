@@ -39,16 +39,18 @@ namespace BeerAPI.Controllers
         }        
 
         // POST REQUEST: add a new beer to the list. 
+        // changed it so that if a beer is deleted , the next beer added will have an id that is one higher than the highest beer id.
         [HttpPost] 
         public ActionResult<Beer> AddBeer(Beer newBeer) 
         {
-            if (!ModelState.IsValid) 
+           if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState); 
-            }
+               return BadRequest(ModelState); 
+           }
 
-            newBeer.Id = beers.Count + 1;
-            beers.Add(newBeer); 
+            _highestBeerId++;
+            newBeer.Id = _highestBeerId;
+            beers.Add(newBeer);
 
             return CreatedAtAction(nameof(GetBeerById), new { id = newBeer.Id }, newBeer);
         }

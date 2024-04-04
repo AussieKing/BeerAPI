@@ -10,33 +10,27 @@ namespace BeerAPI.Controllers
     //? Step 2: DATA STORE
     public class BeersController : ControllerBase 
     {
-        private static List<Beer> beers = new List<Beer>  
-        {
-            new Beer { Id = 1, Name = "Lager", Price = 5.99M },
-            new Beer { Id = 2, Name = "IPA", Price = 6.49M, PromoPrice = 3.99M }
-        };
-
-        private static int _highestBeerId = beers.Max(b => b.Id);
-
-        private IBeerDescriptionService _beerDescriptionService;
+        private readonly IBeerService _beerService;
+        private readonly IBeerDescriptionService _beerDescriptionService;
 
         //! INJECTION
-        public BeersController(IBeerDescriptionService beerDescriptionService)
+        public BeersController(IBeerService beerService, IBeerDescriptionService beerDescriptionService)
         {
-            _beerDescriptionService = beerDescriptionService; 
+            _beerService = beerService;
+            _beerDescriptionService = beerDescriptionService;
         }
 
         // GET REQUEST: return of info given a BeerId
         [HttpGet("{id}")] 
         public IActionResult GetBeerById(int id) 
         {
-            var beer = beers.FirstOrDefault(b => b.Id == id); 
+            var beer = _beerService.GetBeerById(id); 
             if (beer == null) 
             {
                 return NotFound(); 
             }
 
-            var description = ((IBeerDescriptionService)_beerDescriptionService).GetDescription(beer);
+            var description = _beerDescriptionService.GetDescription(beer);
             return Ok(new { Beer = beer, Description = description }); 
         }        
 
@@ -50,33 +44,29 @@ namespace BeerAPI.Controllers
                return BadRequest(ModelState); 
            }
 
-            _highestBeerId++;
-            newBeer.Id = _highestBeerId;
-            beers.Add(newBeer);
-
-            return CreatedAtAction(nameof(GetBeerById), new { id = newBeer.Id }, newBeer);
+            var addedBeer = _beerService.AddBeer(newBeer);
+            return CreatedAtAction(nameof(GetBeerById), new { id = addedBeer.Id }, addedBeer);
         }
 
         // DELETE REQUEST: remove a beer from the list.
         [HttpDelete("{id}")] 
         public ActionResult DeleteBeer(int id)
         {
-            var beer = beers.FirstOrDefault(b => b.Id == id); 
-            if (beer == null) 
+            var success = _beerService.DeleteBeer(id); 
+            if (!success) 
             {
                 return NotFound(); 
             }
-
-            beers.Remove(beer); 
+            
             return NoContent(); 
         }
 
         // PUT REQUEST: update a beer's promo price, and its promo cannot be less than half of the normal price.
         [HttpPut("{id}/promo-price")] 
-        public ActionResult UpdatePromoPrice(int id, [FromBody] PromoPriceUpdateRequest request)
+        public IActionResult UpdatePromoPrice(int id, [FromBody] PromoPriceUpdateRequest request)
         {
-            var beer = beers.FirstOrDefault(b => b.Id == id);  
-            if (beer == null) 
+            var beer = _beerService.GetBeerById(id);
+            if (beer == null)
             {
                 return NotFound();
             }
@@ -85,8 +75,6 @@ namespace BeerAPI.Controllers
             {
                 return BadRequest("Promotional price cannot be less than half of the normal price."); 
             }
-
-            beer.PromoPrice = request.NewPromoPrice;
             return NoContent(); 
         }
     }

@@ -1,5 +1,4 @@
 ﻿using BeerAPI.Models;
-using System.Linq;
 
 namespace BeerAPI.Services
 {

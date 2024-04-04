@@ -146,12 +146,22 @@ want.
 	c. Then the trolley count shows [x] --> `PrintTrolleyState` does this
 
 ### NOTES
-In regards to "Then the trolley count shows", this is currently setup to print in the console. If I need to, say, test in Insomnia via API requests, I would need to change the return to a JSON object. 																					
-Then, integrate the Endpoints in the Controllers (`BeersController` , or maybe create a `TrolleyController `?? ).
+In regards to "Then the trolley count shows" requirement, this is currently setup to print in the console. Is this sufficient?
+If I need to, say, test in Insomnia via API requests, I would need to change the return to a JSON object.																					
+Then, integrate the Endpoints in the Controllers (`BeersController` , or maybe create a `TrolleyController`?? Probably best actually, to keep separation of concerns).
 After that, I'd need to register `TrolleyService` in the `Program.cs` DI container, so that it can be injected into the Controllers.											
-Finally, in the controller's constructor, I can inject the `ITrolleyService` and use it to call the methods to add/remove items from the trolley.
+Finally, in the controller's constructor (the new `TrolleyController`), I can inject the `ITrolleyService` and use it to call the methods to add/remove items from the trolley.
+
+- Step 1: Create a Controller for Trolley operations
+- Step 2: Register the TrolleyService in the DI container (Program.cs), so that it can be injected into the Controllers
+	`builder.Services.AddScoped<ITrolleyService, TrolleyService>();`
+- Step 3: Test Endpoints with Insomnia
+
+Gurdip mentioned I shouldn't use the IBeeRepository in the TrolleyService, as it's not needed. 
+I could create a new Service that both Controllers can depend on, so that they can both be separate and not depending on each other.
 
 
+### COMMENTS 
 We write test cases against Services, as this is where all the logic is. Only dealing with the interface allows for more flexibility.
 Every unit testing consists of Setup, Act, Verify (3 steps),
 Use test explores in VS.

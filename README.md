@@ -21,7 +21,7 @@ An API implementation of CRUD operations using C#.
 
 This API application was designed to return info on Beer objects in a database. It was created using C# and .NET Core. The application uses a Model-View-Controller (MVC) structure. The application can be tested using Postman or Insomnia.mmm
 
-Recently the appliacation had FluentValidation added to it to validate the incoming data. This was done to ensure that the data being sent to the database is valid and to prevent any errors.
+Recently the application had FluentValidation added to it to validate the incoming data. This was done to ensure that the data being sent to the database is valid and to prevent any errors.
 Also, Dependency Injection was added, by registering the `BeerValidator` so that it is automatically used by ASP.NET Core to validate the `Beer` object when it is passed to the `CreateBeer` method.
 
 ## Technologies Used
@@ -135,17 +135,22 @@ As a customer I want to add / remove items to the trolley so that I can purchase
 want.
 
 #### Acceptance Criteria:
-1. Customers can add the same item more than once. For MVP, there is no upper limit on the number of items or quantity they add
-2. When customer adds an item to the trolley, they can see the count of items incremented.
-	a. Given customer has no item in the trolley
+1	. Customers can add the same item more than once. For MVP, there is no upper limit on the number of items or quantity they add [x]
+2	. When customer adds an item to the trolley, they can see the count of items incremented. [x] --> `AddItem` does this
+	a. Given customer has no item in the trolley 
 	b. When they add the first item
-	c. Then the trolley count shows 1
-3. When Customer removes item from the trolley, the count of items is decremented
+	c. Then the trolley count shows 1 [x] --> `PrintTrolleyState` does this
+3. When Customer removes item from the trolley, the count of items is decremented [x] --> `RemoveItem` does this
 	a. Given customer has 1 item in the trolley
 	b. When they remove that item from the trolley
-	c. Then the trolley count shows
+	c. Then the trolley count shows [x] --> `PrintTrolleyState` does this
 
 ### NOTES
+In regards to "Then the trolley count shows", this is currently setup to print in the console. If I need to, say, test in Insomnia via API requests, I would need to change the return to a JSON object. 																					
+Then, integrate the Endpoints in the Controllers (`BeersController` , or maybe create a `TrolleyController `?? ).
+After that, I'd need to register `TrolleyService` in the `Program.cs` DI container, so that it can be injected into the Controllers.											
+Finally, in the controller's constructor, I can inject the `ITrolleyService` and use it to call the methods to add/remove items from the trolley.
+
 
 We write test cases against Services, as this is where all the logic is. Only dealing with the interface allows for more flexibility.
 Every unit testing consists of Setup, Act, Verify (3 steps),

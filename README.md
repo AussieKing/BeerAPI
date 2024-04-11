@@ -146,3 +146,72 @@ Use test explores in VS.
 
 #### TODO:
 - Invoke the service methods within a designated testing area (to be creaed, like Gurdip showed me today with Setup, Act, Verify), to test TrolleyService;
+
+- Have a read of UNIT TESTING nd UNIT TEST , and circle back with So on Thursday. (Hint: look at packages)
+
+### PSEUDO CODING
+
+I'll use xUnit for Testing. 
+I'll need to create a new project in the solution (`dotnet new xunit -n BeerAPI.Tests -o tests/BeerAPI.Tests`), for testing and main project. Will be working on branch feature-testing. 
+Add the test prj to the solution (`dotnet sln add ./tests/BeerAPI.Tests/BeerAPI.Tests.csproj`).
+Can also add reference (`dotnet add ./tests/BeerAPI.Tests/BeerAPI.Tests.csproj reference ./src/BeerAPI/BeerAPI.csproj`), so that it can access classes and methods in the main prj.
+Then, create a new Library (hint: use `dotnet new classlib`), and a new xUnit test project (`dotnet new xunit`), and add to Solution.
+Write tests (I can write basic tests using  [Fact] for individual test cases and [Theory] along with [InlineData] for parameterized tests that can be run with different inputs).
+`Moq` is needed to setup the expected behaviour.
+As per Test-Driven Development (TDD) best practice, I can start with writing failing tests, then code to pass the test, then refactor. 
+The next step is to write continuous testing.
+Make sure to name the tests clearly (eg: `MethodName_StateUnderTest_ExpectedBehavior`), organize them logically, and avoid complicating them too much.
+
+### TESTING
+Feedback:
+Unit Tests need to be in the different project, so that they are not in production.
+Other Unit Testings I could practice on:
+
+BeersController 
+- BeersController: 
+	- Test getting beer by ID
+	- Test response when ID is not found (404)
+- AddBeer:
+	- Test adding a valid beer (200)
+	- Test adding a beer with invalid data (400)
+	- Test adding a beer with missing mandatory data 
+- DeleteBeer:
+	- Test response when ID is not found (404)
+	- Test response when ID is found (201)
+- UpdateBeer:
+	- Test response whit a valid promo price
+	- Test response whit an ivalid promo price (price less than half of the normal price)
+	- Test response when ID is found (404)
+
+TrolleyController
+- AddToTrolley:
+	- Test adding an existing beer to the trolley
+	- Test adding a new beer to the trolley
+- RemoveItemFromTrolley:
+	- Test removing an item that exists from the trolley
+	- Test removing an item that does not exist from the trolley (404)
+	- Test removing item from an empty trolley
+- GetTrolley:
+	- Test getting the trolley when it is empty
+	- Test getting the trolley when it has items
+
+Services
+- BeerService:
+	- Test getting all beers
+	- Test CRUD operations and that lists updates
+- BeerDescriptionService: 
+	- Test getting descriptions for items(with promo and without promo prices)
+- TrolleyService:
+	- Test adding an item to the trolley
+	- Test removing an item from the trolley
+	- Test getting the trolley when it is empty
+	- Test getting the trolley when it has items
+
+Validators
+- BeerValidator:
+	- Test validation logic based on requirements
+
+Models
+- Beer and TrolleyItem:
+	- Test that the models are created correctly
+	- Test that the models are created with the correct properties

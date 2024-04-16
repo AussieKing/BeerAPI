@@ -16,7 +16,6 @@ builder.Services.AddTransient<IValidator<Beer>, BeerValidator>();
 builder.Services.AddScoped<IBeerDescriptionService, BeerDescriptionService>();
 builder.Services.AddScoped<IBeerService, BeerService>();
 builder.Services.AddScoped<ITrolleyService, TrolleyService>();
-builder.Services.AddSingleton<ITrolleyService, TrolleyService>();
 
 builder.Services.AddEndpointsApiExplorer(); 
 builder.Services.AddSwaggerGen(); 

@@ -62,5 +62,30 @@ namespace BeerAPI.Tests.Controllers
             Assert.Empty(trolleyServiceUser1.GetTrolley().Items);
             Assert.Single(trolleyServiceUser2.GetTrolley().Items);
         }
+
+        [Fact]
+        public void TrolleyService_ShouldProvideSeparateInstancesForDifferentScopes()
+        {
+            var services = new ServiceCollection();
+            services.AddScoped<ITrolleyService, TrolleyService>();
+            var serviceProvider = services.BuildServiceProvider();
+
+            // Simulate scope for user 1
+            using (var scopeUser1 = serviceProvider.CreateScope())
+            {
+                var trolleyServiceUser1 = scopeUser1.ServiceProvider.GetService<ITrolleyService>();
+                trolleyServiceUser1.AddItem(new Beer { Id = 1, Name = "Test Beer 1", Price = 5.99M });
+                Assert.Single(trolleyServiceUser1.GetTrolley().Items);
+            }
+
+            // Simulate scope for user 2
+            using (var scopeUser2 = serviceProvider.CreateScope())
+            {
+                var trolleyServiceUser2 = scopeUser2.ServiceProvider.GetService<ITrolleyService>();
+                trolleyServiceUser2.AddItem(new Beer { Id = 2, Name = "Test Beer 2", Price = 6.99M });
+                Assert.Single(trolleyServiceUser2.GetTrolley().Items);
+            }
+        }
+
     }
 }

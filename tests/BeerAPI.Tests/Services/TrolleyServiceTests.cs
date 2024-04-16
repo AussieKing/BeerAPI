@@ -1,38 +1,47 @@
 ﻿using BeerAPI.Models;
 using BeerAPI.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Xunit;
+
 
 namespace BeerAPI.Tests.Services
 {
     public class TrolleyServiceTests
     {
-        private readonly TrolleyService _trolleyService;
+        private TrolleyService _trolleyService;
 
         public TrolleyServiceTests()
         {
             _trolleyService = new TrolleyService();
         }
 
+        private void ResetTrolleyServiceState()
+        {
+            _trolleyService = new TrolleyService(); // adding this to re-set the state of the service before each test
+        }
+
         [Fact]
         public void AddItem_ShouldAddToTrolley()
         {
+            ResetTrolleyServiceState();
+
             // Arrange
             var beer = new Beer { Id = 1, Name = "Test Beer", Price = 5.99M };
 
             // Act
             _trolleyService.AddItem(beer);
+            var addedItem = _trolleyService.GetTrolley().Items.FirstOrDefault();
 
             // Assert
-            Assert.Equal(1, _trolleyService.GetItemCount());
+            Assert.NotNull(addedItem);
+            Assert.Equal(beer.Name, addedItem.Beer.Name);
+            Assert.Equal(beer.Price, addedItem.Beer.Price);
         }
 
         [Fact]
         public void AddItem_ShouldIncreaseQuantity()
         {
+            ResetTrolleyServiceState();
+
             // Arrange
             var beer = new Beer { Id = 1, Name = "Test Beer", Price = 5.99M };
 
@@ -40,24 +49,28 @@ namespace BeerAPI.Tests.Services
             _trolleyService.AddItem(beer);
             _trolleyService.AddItem(beer);
 
+            var trolleyItem = _trolleyService.GetTrolley().Items.FirstOrDefault(i => i.Beer.Id == beer.Id);
+
             // Assert
-            Assert.Equal(2, _trolleyService.GetItemCount());
+            Assert.NotNull(trolleyItem);
+            Assert.Equal(2, trolleyItem.Quantity);
         }
 
         [Fact]
         public void RemoveItem_ShouldDecreaseQuantity()
         {
+            ResetTrolleyServiceState();
+
             // Arrange
             var beer = new Beer { Id = 1, Name = "Test Beer", Price = 5.99M };
             _trolleyService.AddItem(beer);
             _trolleyService.AddItem(beer); 
 
             // Act
-            _trolleyService.RemoveItem(1);
+            _trolleyService.RemoveItem(beer.Id);
 
             // Assert
-            var trolley = _trolleyService.GetTrolley();
-            var trolleyItem = trolley.Items.FirstOrDefault(i => i.Beer.Id == beer.Id);
+            var trolleyItem = _trolleyService.GetTrolley().Items.FirstOrDefault(i => i.Beer.Id == beer.Id);
             Assert.NotNull(trolleyItem);
             Assert.Equal(1, trolleyItem.Quantity); 
         }
@@ -66,6 +79,8 @@ namespace BeerAPI.Tests.Services
         [Fact]
         public void RemoveItem_BeerDoesNotExist_ReturnsFalse()
         {
+            ResetTrolleyServiceState();
+
             // Arrange
             var beerId = 999; // not existing id
 
@@ -79,6 +94,8 @@ namespace BeerAPI.Tests.Services
         [Fact]
         public void GetItemCount_ItemsAdded_ReturnsCorrectCount()
         {
+            ResetTrolleyServiceState();
+
             // Arrange
             _trolleyService.AddItem(new Beer { Id = 1, Name = "Beer One", Price = 2.50M });
             _trolleyService.AddItem(new Beer { Id = 2, Name = "Beer Two", Price = 3.50M });

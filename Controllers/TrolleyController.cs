@@ -18,7 +18,7 @@ namespace BeerAPI.Controllers
             _beerService = beerService;
         }
 
-        [HttpPost("add/{beerId}")]
+        [HttpPost("{beerId}")]
         public IActionResult AddItemToTrolley(int beerId)
         {
             var beer = _beerService.GetBeerById(beerId);
@@ -31,7 +31,7 @@ namespace BeerAPI.Controllers
             return Ok(new { message = "Item added to trolley.", trolley = _trolleyService.GetTrolley() });
         }
 
-        [HttpPost("remove/{beerId}")]
+        [HttpDelete("{beerId}")]
         public IActionResult RemoveItemFromTrolley(int beerId)
         {
             bool itemRemoved = _trolleyService.RemoveItem(beerId);

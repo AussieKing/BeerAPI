@@ -8,5 +8,6 @@ namespace BeerAPI.Services
         List<Beer> GetAllBeers();
         Beer AddBeer(Beer newBeer);
         bool DeleteBeer(int id);
+        void UpdateBeer(Beer beer);
     }
 }

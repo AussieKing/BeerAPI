@@ -55,5 +55,23 @@ namespace BeerAPI.Tests.Services
             Assert.True(deleteResult);
             Assert.Null(beerAfterDelete);
         }
+
+        [Fact]
+        public void UpdateBeer_ExistingId_UpdatesBeer()
+        {
+            // Arrange
+            var beerToUpdate = new Beer { Id = 1, Name = "Updated Lager", Price = 6.99M, PromoPrice = 4.99M };
+            _service.AddBeer(new Beer { Id = 1, Name = "Lager", Price = 5.99M }); 
+
+            // Act
+            _service.UpdateBeer(beerToUpdate);
+
+            // Assert
+            var updatedBeer = _service.GetBeerById(1);
+            Assert.NotNull(updatedBeer);
+            Assert.Equal("Updated Lager", updatedBeer?.Name);
+            Assert.Equal(6.99M, updatedBeer?.Price);
+            Assert.Equal(4.99M, updatedBeer?.PromoPrice);
+        }
     }
 }

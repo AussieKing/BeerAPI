@@ -75,6 +75,12 @@ namespace BeerAPI.Controllers
             {
                 return BadRequest("Promotional price cannot be less than half of the normal price."); 
             }
+
+            // Update the promo price (was missing)
+            beer.PromoPrice = request.NewPromoPrice;
+
+            _beerService.UpdateBeer(beer);
+
             return NoContent(); 
         }
     }

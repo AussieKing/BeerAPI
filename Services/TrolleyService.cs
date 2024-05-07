@@ -1,5 +1,4 @@
 ﻿using BeerAPI.Models;
-using System.Linq;
 
 namespace BeerAPI.Services
 {
@@ -21,7 +20,7 @@ namespace BeerAPI.Services
             PrintTrolleyState();
         }
 
-        public void RemoveItem(int beerId)
+        public bool RemoveItem(int beerId)
         {
             var item = _trolley.Items.FirstOrDefault(i => i.Beer?.Id == beerId);
             if (item != null)
@@ -31,8 +30,9 @@ namespace BeerAPI.Services
                 {
                     _trolley.Items.Remove(item);
                 }
+                return true;
             }
-            PrintTrolleyState();
+            return false;
         }
 
         public int GetItemCount()

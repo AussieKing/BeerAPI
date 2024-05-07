@@ -1,4 +1,4 @@
-//? Adding Dependency Injection to the Project
+// Adding Dependency Injection to the Project
 namespace BeerAPI.Services
 {
     public interface IBeerDescriptionService

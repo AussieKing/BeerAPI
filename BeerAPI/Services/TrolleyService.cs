@@ -1,55 +1,51 @@
 ﻿using BeerAPI.Models;
+using BeerAPI.Repositories;
+using System;
+using System.Linq;
 
 namespace BeerAPI.Services
 {
     public class TrolleyService : ITrolleyService
     {
-        private readonly Trolley _trolley = new Trolley();  // using _ to denote the fact it's a private field of a class.
+        private readonly ITrolleyRepository _trolleyRepository; 
 
+        // Constructor injection of the repo
+        public TrolleyService(ITrolleyRepository trolleyRepository)
+        {
+            _trolleyRepository = trolleyRepository;
+        }
+
+        public TrolleyService()
+        {
+        }
+
+        // ADD
         public void AddItem(Beer beer)
         {
-            var item = _trolley.Items.FirstOrDefault(i => i.Beer?.Id == beer.Id);
-            if (item == null)
-            {
-                _trolley.Items.Add(new TrolleyItem { Beer = beer, Quantity = 1 });
-            }
-            else
-            {
-                item.Quantity++;
-            }
+            _trolleyRepository.AddBeerToTrolley(beer);
             PrintTrolleyState();
         }
 
+        // REMOVE
         public bool RemoveItem(int beerId)
         {
-            var item = _trolley.Items.FirstOrDefault(i => i.Beer?.Id == beerId);
-            if (item != null)
-            {
-                item.Quantity--;
-                if (item.Quantity <= 0)
-                {
-                    _trolley.Items.Remove(item);
-                }
-                return true;
-            }
-            return false;
+            return _trolleyRepository.RemoveBeerFromTrolley(beerId);
         }
+/*
+        public int GetItemCount() => _trolleyRepository.Items.Sum(i => i.Quantity);*/
 
-        public int GetItemCount()
-        {
-            return _trolley.Items.Sum(i => i.Quantity);
-        }
-
+        // GET
         public Trolley GetTrolley()
         {
-            return _trolley;
+            return _trolleyRepository.GetTrolley();
         }
 
         // Logic to print the state of the trolley
         private void PrintTrolleyState()
         {
-            Console.WriteLine($"Current trolley count: {GetItemCount()}");
-            foreach (var item in _trolley.Items)
+            var trolley = GetTrolley(); // get the trolley from the repository
+            Console.WriteLine($"Current trolley count: {trolley.Items.Sum(i => i.Quantity)}");
+            foreach (var item in trolley.Items)
             {
                 Console.WriteLine($"Item: {item.Beer?.Name}, Quantity: {item.Quantity}");
             }

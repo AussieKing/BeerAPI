@@ -6,7 +6,7 @@ namespace BeerAPI.Services
     {
         void AddItem(Beer beer);
         bool RemoveItem(int beerId);
-        int GetItemCount();
-        Trolley GetTrolley();
+/*        int GetItemCount();
+*/        Trolley GetTrolley();
     }
 }

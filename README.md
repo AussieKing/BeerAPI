@@ -157,14 +157,17 @@ I could star by defining an interface for the the trolley repository that includ
 
 Then, I need to implement the Trolley repository, so that it can handle the in-memory data storage (or, ask So if we should look at implementing a database-based solution right away, as if I use the `Dictionary` in the Trolley repository to store the data, the data will be lost once the app restarts)
 
-SQL Lite - 
-### TESTING
+Use SQL Lite 
 
-
+### STEPS
+1. Installed NuGet package SQLite: `dotnet add package Microsoft.Data.Sqlite
+dotnet add package Dapper`
+2. Connection string in appsettings.json (database in output directory)
+3. Create + Initalize db : create new folder (Data) with a dedicated Class (`DatabaseSetup.cs`) to initialise the db. Then go through usual steps (check for db file existance, create tables, etc)
+4. Create Repository classes (to bridge the app logic and the db access), use Repo interface for specific db operations. Then implement the interface in a class with Dapper (to execute SQL on the SqLite db), and finally place this in the Repositories folder (inisde the Data directory)
+5. Integrate the db operations in the app: change the service classes to use the db instead of the in app memory (inject Repository into the Service)
+6. Register Database as Singleton, 
 
 
 ### REVIEW
-Life Cycle 
-- Review Logic : what happens when multiple users using the same trolley? need to be able to add and remove items from the trolley. How can you keep the data but keep the trolley service in scope?
-- RESTful naming convetions 
->>>>>>> feature/trolley-api
+

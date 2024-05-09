@@ -17,6 +17,10 @@ namespace BeerAPI.Tests.Controllers
             var services = new ServiceCollection();
             services.AddScoped<ITrolleyService, TrolleyService>();
 
+            /* TODO : In general, we don't interact with the dependency injection container because that exists outside the control of our code. 
+                These tests seem to be testing the implementation of the container rather than the trolley service itself. */
+
+
             // Creating service providers for two different scopes (simulating two users)
             var serviceProviderUser1 = services.BuildServiceProvider().CreateScope().ServiceProvider;
             var serviceProviderUser2 = services.BuildServiceProvider().CreateScope().ServiceProvider;

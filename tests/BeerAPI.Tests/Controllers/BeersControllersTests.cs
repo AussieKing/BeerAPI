@@ -32,6 +32,9 @@ namespace BeerAPI.Tests.Controllers
 
             // Assert
             Assert.IsType<NotFoundResult>(result);
+           
+            /* TODO : Checking for NotFoundResult is a good start, but have a think about what that tells future engineers. 
+             * Consider the asserts below. What thoughts will a future engineer reading these different asserts have? */
         }
 
         [Fact]

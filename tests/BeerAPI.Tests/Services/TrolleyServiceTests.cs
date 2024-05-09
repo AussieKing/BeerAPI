@@ -14,16 +14,9 @@ namespace BeerAPI.Tests.Services
             _trolleyService = new TrolleyService();
         }
 
-        private void ResetTrolleyServiceState()
-        {
-            _trolleyService = new TrolleyService(); // adding this to re-set the state of the service before each test
-        }
-
         [Fact]
         public void AddItem_ShouldAddToTrolley()
         {
-            ResetTrolleyServiceState();
-
             // Arrange
             var beer = new Beer { Id = 1, Name = "Test Beer", Price = 5.99M };
 
@@ -40,8 +33,6 @@ namespace BeerAPI.Tests.Services
         [Fact]
         public void AddItem_ShouldIncreaseQuantity()
         {
-            ResetTrolleyServiceState();
-
             // Arrange
             var beer = new Beer { Id = 1, Name = "Test Beer", Price = 5.99M };
 
@@ -59,8 +50,6 @@ namespace BeerAPI.Tests.Services
         [Fact]
         public void RemoveItem_ShouldDecreaseQuantity()
         {
-            ResetTrolleyServiceState();
-
             // Arrange
             var beer = new Beer { Id = 1, Name = "Test Beer", Price = 5.99M };
             _trolleyService.AddItem(beer);
@@ -79,8 +68,6 @@ namespace BeerAPI.Tests.Services
         [Fact]
         public void RemoveItem_BeerDoesNotExist_ReturnsFalse()
         {
-            ResetTrolleyServiceState();
-
             // Arrange
             var beerId = 999; // not existing id
 
@@ -94,8 +81,6 @@ namespace BeerAPI.Tests.Services
         [Fact]
         public void GetItemCount_ItemsAdded_ReturnsCorrectCount()
         {
-            ResetTrolleyServiceState();
-
             // Arrange
             _trolleyService.AddItem(new Beer { Id = 1, Name = "Beer One", Price = 2.50M });
             _trolleyService.AddItem(new Beer { Id = 2, Name = "Beer Two", Price = 3.50M });

@@ -2,6 +2,7 @@
 using BeerAPI.Models;
 using BeerAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 
@@ -35,6 +36,8 @@ namespace BeerAPI.Tests.Controllers
            
             /* TODO : Checking for NotFoundResult is a good start, but have a think about what that tells future engineers. 
              * Consider the asserts below. What thoughts will a future engineer reading these different asserts have? */
+            var statusCodeResult = Assert.IsAssignableFrom<IStatusCodeActionResult>(result);
+            Assert.Equal(404, statusCodeResult.StatusCode);
         }
 
         [Fact]

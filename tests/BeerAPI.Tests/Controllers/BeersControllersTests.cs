@@ -31,7 +31,8 @@ namespace BeerAPI.Tests.Controllers
             var result = _controller.GetBeerById(999); // this ID doesn't exist
 
             // Assert
-            Assert.IsType<NotFoundResult>(result);
+            var statusCodeResult = Assert.IsAssignableFrom<IStatusCodeActionResult>(result);
+            Assert.Equal(404, statusCodeResult.StatusCode);
         }
 
         [Fact]

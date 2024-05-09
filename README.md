@@ -215,6 +215,8 @@ Models
 - Beer and TrolleyItem:
 	- Test that the models are created correctly
 	- Test that the models are created with the correct properties
+<<<<<<< HEAD
+=======
 
 
 
@@ -222,3 +224,4 @@ Models
 Life Cycle 
 - Review Logic : what happens when multiple users using the same trolley? need to be able to add and remove items from the trolley. How can you keep the data but keep the trolley service in scope?
 - RESTful naming convetions 
+>>>>>>> feature/trolley-api

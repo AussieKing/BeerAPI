@@ -36,5 +36,16 @@ namespace BeerAPI.Services
             return false;
         }
 
+        public void UpdateBeer(Beer updatedBeer)
+        {
+            var beer = GetBeerById(updatedBeer.Id);
+            if (beer != null)
+            {
+                beer.Name = updatedBeer.Name;
+                beer.Price = updatedBeer.Price;
+                beer.PromoPrice = updatedBeer.PromoPrice;
+            }
+        }
+
     }
 }

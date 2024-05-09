@@ -2,24 +2,27 @@
 using BeerAPI.Models;
 using BeerAPI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using System.Linq;
 using Xunit;
+using Moq;
+using System.Linq;
+using BeerAPI.Repositories;
 
 namespace BeerAPI.Tests.Controllers
 {
     public class TrolleyControllerTests
     {
-
         private readonly TrolleyService _trolleyService1;
         private readonly TrolleyService _trolleyService2;
+        private Mock<ITrolleyRepository> _mockRepository1;
+        private Mock<ITrolleyRepository> _mockRepository2;
 
         public TrolleyControllerTests()
         {
-            _trolleyService1 = new TrolleyService();
-            _trolleyService2 = new TrolleyService();
+            _mockRepository1 = new Mock<ITrolleyRepository>();
+            _mockRepository2 = new Mock<ITrolleyRepository>();
+            _trolleyService1 = new TrolleyService(_mockRepository1.Object);
+            _trolleyService2 = new TrolleyService(_mockRepository2.Object);
         }
-
 
         [Fact]
         public void AddItemToTrolley_ShouldHandleMultipleInstancesSeparately()
@@ -44,12 +47,10 @@ namespace BeerAPI.Tests.Controllers
             // Act
             var removeResultUser1 = _trolleyService1.RemoveItem(1);
 
-
             // Assert
             Assert.True(removeResultUser1);
             Assert.Empty(_trolleyService1.GetTrolley().Items);
             Assert.Single(_trolleyService2.GetTrolley().Items);
         }
-
     }
 }

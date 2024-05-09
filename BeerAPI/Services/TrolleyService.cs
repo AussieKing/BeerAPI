@@ -1,6 +1,5 @@
 ﻿using BeerAPI.Models;
 using BeerAPI.Repositories;
-using System;
 using System.Linq;
 
 namespace BeerAPI.Services
@@ -13,10 +12,6 @@ namespace BeerAPI.Services
         public TrolleyService(ITrolleyRepository trolleyRepository)
         {
             _trolleyRepository = trolleyRepository;
-        }
-
-        public TrolleyService()
-        {
         }
 
         // ADD

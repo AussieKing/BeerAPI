@@ -1,46 +1,52 @@
 using BeerAPI.Models;
+using Dapper;
 using System.Collections.Generic;
-using System.Linq;
+using System.Data;
+using Microsoft.Data.Sqlite;
 
 namespace BeerAPI.Repositories
 {
     public class TrolleyRepository : ITrolleyRepository
     {
-        private static readonly List<TrolleyItem> _items = new List<TrolleyItem>();
+        private readonly IDbConnection _db;
 
-        public object Items => throw new NotImplementedException();
+        public TrolleyRepository(string connectionString)
+        {
+            _db = new SqliteConnection(connectionString);
+        }
 
         public void AddBeerToTrolley(Beer beer)
         {
-            var item = _items.FirstOrDefault(i => i.Beer.Id == beer.Id);
-            if (item == null)
-            {
-                _items.Add(new TrolleyItem { Beer = beer, Quantity = 1 });
-            }
-            else
-            {
-                item.Quantity++;
-            }
+            var sql = @"INSERT INTO TrolleyItems (BeerId, Quantity) VALUES (@BeerId, 1)
+                        ON CONFLICT(BeerId) DO UPDATE SET Quantity = Quantity + 1;";
+            _db.Execute(sql, new { BeerId = beer.Id });
         }
 
         public bool RemoveBeerFromTrolley(int beerId)
         {
-            var item = _items.FirstOrDefault(i => i.Beer.Id == beerId);
-            if (item != null)
-            {
-                item.Quantity--;
-                if (item.Quantity == 0)
-                {
-                    _items.Remove(item);
-                }
-                return true;
-            }
-            return false;
+            var sql = @"DELETE FROM TrolleyItems WHERE BeerId = @BeerId AND Quantity > 1;
+                        UPDATE TrolleyItems SET Quantity = Quantity - 1 WHERE BeerId = @BeerId;";
+            return _db.Execute(sql, new { BeerId = beerId }) > 0;
         }
 
         public Trolley GetTrolley()
         {
-            return new Trolley { Items = _items };
+            // SQL to fetch trolley items with associated beer data
+            var sql = @"SELECT ti.Quantity, b.Id as BeerId, b.Name, b.Price
+                FROM TrolleyItems ti 
+                JOIN Beers b ON ti.BeerId = b.Id;";
+
+            var trolleyItems = _db.Query<TrolleyItem, Beer, TrolleyItem>(
+                sql,
+                (trolleyItem, beer) => {
+                    trolleyItem.Beer = beer;
+                    return trolleyItem;
+                },
+                splitOn: "BeerId"  
+            ).ToList();
+
+            return new Trolley { Items = trolleyItems };
         }
+
     }
 }

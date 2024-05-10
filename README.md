@@ -171,21 +171,13 @@ This can now be done directly in a Database, rather than in-memory data like pre
 ![image](https://github.com/AussieKing/BeerAPI/assets/126050763/b7faf5c8-7fcb-4246-93c4-6034f83b1e2d)
 
 ### DEV SECTION 
-We write test cases against Services, as this is where all the logic is. Only dealing with the interface allows for more flexibility.
-Every unit testing consists of Setup, Act, Verify (3 steps),
-Use test explores in VS.
 
 #### TODO:
-- Practice using LocalDb (ideally SQL Server, but I don't have access yet), which is a file based compact version of SQL Server
+- Practice using LocalDb (ideally SQL Server, but I don't have access yet), which is a file based compact version of SQL Server.
+- Correct Issue 1 above for negative numbers in db.
 
 #### PSEUDO CODING
-I need to refactor my trolley service so that it takes a trolley repository, an the treolley repo does CRUD operations on the list in memory. The repo should be Singleton.
 
-I could star by defining an interface for the the trolley repository that includes the CRUD ops that are specific to the trolley data.
-
-Then, I need to implement the Trolley repository, so that it can handle the in-memory data storage (or, ask So if we should look at implementing a database-based solution right away, as if I use the `Dictionary` in the Trolley repository to store the data, the data will be lost once the app restarts)
-
-Use SQL Lite.
 
 #### STEPS TAKEN SO FAR
 1. Installed NuGet package SQLite: `dotnet add package Microsoft.Data.Sqlite
@@ -194,7 +186,7 @@ dotnet add package Dapper`
 3. Create + Initalize db : create new folder (Data) with a dedicated Class (`DatabaseSetup.cs`) to initialise the db. Then go through usual steps (check for db file existance, create tables, etc)
 4. Create Repository classes (to bridge the app logic and the db access), use Repo interface for specific db operations. Then implement the interface in a class with Dapper (to execute SQL on the SqLite db), and finally place this in the Repositories folder (inisde the Data directory)
 5. Integrate the db operations in the app: change the service classes to use the db instead of the in app memory (inject Repository into the Service)
-6. Register Database as Singleton, 
+6. Registered Database as Singleton, 
 
 ## Author
 

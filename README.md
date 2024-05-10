@@ -13,11 +13,12 @@ An API implementation of CRUD operations using C#.
 - [Usage](#usage)
 - [Installation](#installation)
 - [License](#license)
-- [Author](#author)
-- [Progress](#progress)
 - [User Story](#user-story)
+- [Progress](#progress)
 - [Screenshots](#screenshots)
-
+- [Issues](#issues)
+- [Author](#author)
+  
 ## Overview
 
 This API application was designed to return info on Beer objects in a database. It was created using C# and .NET Core. The application uses a Model-View-Controller (MVC) structure. The application can be tested using Postman or Insomnia.mmm
@@ -81,9 +82,6 @@ dotnet dev-certs https --trust
 
 This application is covered under the MIT license. Please refer to the document titled [LICENSE](LICENSE).
 
-## Author
-
-This application was written and developed by Freddy Dordoni.
 
 ## USER STORY
 You are a developer in our e-commerce team. We are tasked to build the Shopping Trolley
@@ -123,34 +121,64 @@ want.
 	b. When they remove that item from the trolley
 	c. Then the trolley count shows [x] --> `PrintTrolleyState` does this
 
+
+## PROGRESS
+- CRUD operations now work successfully: I can now create, update, read and delete new Beer items, as well as TrolleyItems. 
+This can now be done directly in a Database, rather than in-memory data like previously.
+
 ## SCREENSHOTS
-- ADD Beer item to Trolley :
-<img width="627" alt="ADD beer" src="https://github.com/AussieKing/BeerAPI/assets/126050763/f5895d2d-a2bb-4ef2-b382-102d9ed65477">
+### GET
+  	GET Trolley (empty) in Swagger
+<img width="733" alt="trolley" src="https://github.com/AussieKing/BeerAPI/assets/126050763/c77d68c6-44fe-4ef6-9a19-13a390d1b2c8">
 
-- GET Trolley status:
-<img width="669" alt="GET Trolley-1" src="https://github.com/AussieKing/BeerAPI/assets/126050763/e59d7989-8af8-4e96-ba50-25d70933019c">
-  
-- DELETE Beer item from Trolley:
-<img width="675" alt="REMOVE Beer-1" src="https://github.com/AussieKing/BeerAPI/assets/126050763/46e99c0d-88b1-4061-a4fe-511aa378e9e5">
+  	GET Trolley (empty) in DB Browser
+<img width="534" alt="DbBr-GET" src="https://github.com/AussieKing/BeerAPI/assets/126050763/512d97fc-08a0-4300-a850-f3e0ee04a180">
 
-- DELETE Last of Beer items from Trolley
-<img width="663" alt="REMOVE Beer-2" src="https://github.com/AussieKing/BeerAPI/assets/126050763/752b4054-1edd-4a7c-870c-9fa5be67093d">
+### POST
+	POST Item to Trolley in Swagger
+<img width="817" alt="POST to trolley" src="https://github.com/AussieKing/BeerAPI/assets/126050763/4d7cd06d-9820-4868-b17b-bc1e145dd7ca">
 
-- GET Trolley status again (Trolley now Empty):
-<img width="660" alt="GET Trolley-2" src="https://github.com/AussieKing/BeerAPI/assets/126050763/543cf6b1-e346-46d4-a4e0-aef836042c4b">
+	POST Item to Trolley in DB Browswer
+<img width="490" alt="add beer to trolley" src="https://github.com/AussieKing/BeerAPI/assets/126050763/1cf5e17d-4693-487c-889d-4e71902d8569">
 
-### DEV COMMENTS 
+	GET Trolley in DB  Browser and Swagger with new Items
+<img width="517" alt="get new trolley" src="https://github.com/AussieKing/BeerAPI/assets/126050763/8b64f91e-2bfe-4ee4-b87a-384b6f0c2f5c">
+<img width="745" alt="get swagger" src="https://github.com/AussieKing/BeerAPI/assets/126050763/6b809de5-191d-4709-b180-8b462c1f0a3c">
+
+### DELETE
+	DELETE Item from Trolley in Swagger
+<img width="770" alt="swagger delete" src="https://github.com/AussieKing/BeerAPI/assets/126050763/6ec90987-e23d-48c9-a610-7eef129d6a0e">
+
+	DELETE Item from Trolley in DB Browser
+<img width="505" alt="delete DBB" src="https://github.com/AussieKing/BeerAPI/assets/126050763/47e80064-1de0-4300-a841-c31c0ac507bf">
+
+### CRUD operations for Beer Items in DB Browser
+	CREATE New Beer Iteam in DB Browser
+<img width="526" alt="So's sour" src="https://github.com/AussieKing/BeerAPI/assets/126050763/fe044161-fa23-4e57-be8d-1cdb1c305571">
+<img width="146" alt="So's sour-select" src="https://github.com/AussieKing/BeerAPI/assets/126050763/3c45f6c2-ecc8-49b8-b657-07f9486c8954">
+
+	UPDATE Beer Item in DB Browser
+<img width="462" alt="so's sour-update" src="https://github.com/AussieKing/BeerAPI/assets/126050763/4a884161-a98f-42ba-b299-f770f1c68939">
+<img width="229" alt="so's updated" src="https://github.com/AussieKing/BeerAPI/assets/126050763/6ee1929e-49a9-4e66-89a8-3cd248cd4df0">
+
+	DELETE a Beer Item in DB Browser
+<img width="294" alt="so's deleted" src="https://github.com/AussieKing/BeerAPI/assets/126050763/f9f2a725-0f96-4ee5-87b3-bebbd0055955">
+<img width="227" alt="so's gone" src="https://github.com/AussieKing/BeerAPI/assets/126050763/c9935720-86f8-4db8-b16d-28233c952e69">
+
+	
+## ISSUES
+- Issue 1: when deleting Beer, it lets me go in negative. TODO: stop at 0.
+![image](https://github.com/AussieKing/BeerAPI/assets/126050763/b7faf5c8-7fcb-4246-93c4-6034f83b1e2d)
+
+### DEV SECTION 
 We write test cases against Services, as this is where all the logic is. Only dealing with the interface allows for more flexibility.
 Every unit testing consists of Setup, Act, Verify (3 steps),
 Use test explores in VS.
 
 #### TODO:
 - Practice using LocalDb (ideally SQL Server, but I don't have access yet), which is a file based compact version of SQL Server
-- 
-- 
 
-### PSEUDO CODING
-
+#### PSEUDO CODING
 I need to refactor my trolley service so that it takes a trolley repository, an the treolley repo does CRUD operations on the list in memory. The repo should be Singleton.
 
 I could star by defining an interface for the the trolley repository that includes the CRUD ops that are specific to the trolley data.
@@ -159,7 +187,7 @@ Then, I need to implement the Trolley repository, so that it can handle the in-m
 
 Use SQL Lite.
 
-### STEPS
+#### STEPS TAKEN SO FAR
 1. Installed NuGet package SQLite: `dotnet add package Microsoft.Data.Sqlite
 dotnet add package Dapper`
 2. Connection string in appsettings.json (database in output directory)
@@ -168,9 +196,8 @@ dotnet add package Dapper`
 5. Integrate the db operations in the app: change the service classes to use the db instead of the in app memory (inject Repository into the Service)
 6. Register Database as Singleton, 
 
+## Author
 
-### PROGRESS
-- CRUD operations now work successfully: I can now create, update, read and delete new Beer items, as well as TrolleyItems.
+This application was written and developed by Freddy Dordoni.
 
-- Database can be queried properly: I can now perform CRUD operations using a database directly, rather than in-memory data like previously.
 

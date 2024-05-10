@@ -1,15 +1,32 @@
 ﻿using BeerAPI.Models;
 using BeerAPI.Services;
+using Xunit;
+using Microsoft.Data.Sqlite;
+using Dapper;
 
 namespace BeerAPI.Tests.Services
 {
-    public class BeerServiceTests
+    public class BeerServiceTests : IDisposable
     {
         private readonly BeerService _service;
+        private readonly SqliteConnection _connection;
 
         public BeerServiceTests()
         {
-            _service = new BeerService();
+            // Settingup an in-memory SQLite database
+            _connection = new SqliteConnection("Data Source=:memory:");
+            _connection.Open();
+            SetupDatabase(_connection);
+
+            _service = new BeerService(_connection.ConnectionString);
+        }
+
+        private void SetupDatabase(SqliteConnection connection)
+        {
+            // Create the necessary tables for testing
+            connection.Execute("CREATE TABLE Beers (Id INTEGER PRIMARY KEY, Name TEXT, Price REAL, PromoPrice REAL);");
+            // Seed data if necessary
+            connection.Execute("INSERT INTO Beers (Name, Price) VALUES ('Lager', 5.99), ('IPA', 10.00);");
         }
 
         [Fact]
@@ -72,6 +89,11 @@ namespace BeerAPI.Tests.Services
             Assert.Equal("Updated Lager", updatedBeer?.Name);
             Assert.Equal(6.99M, updatedBeer?.Price);
             Assert.Equal(4.99M, updatedBeer?.PromoPrice);
+        }
+        public void Dispose()
+        {
+            // Cleanup and close the in-memory database opened earlier
+            _connection.Close();
         }
     }
 }

@@ -145,8 +145,8 @@ Every unit testing consists of Setup, Act, Verify (3 steps),
 Use test explores in VS.
 
 #### TODO:
-- Implement the NTier Achitecture (Presentation, Application, Database), where the Database is responisble to KEEP the STATE of the Application.
-- Have a read again at Repository Pattern (Infrastructure persistance layout)
+- Practice using LocalDb (ideally SQL Server, but I don't have access yet), which is a file based compact version of SQL Server
+- 
 - 
 
 ### PSEUDO CODING
@@ -157,7 +157,7 @@ I could star by defining an interface for the the trolley repository that includ
 
 Then, I need to implement the Trolley repository, so that it can handle the in-memory data storage (or, ask So if we should look at implementing a database-based solution right away, as if I use the `Dictionary` in the Trolley repository to store the data, the data will be lost once the app restarts)
 
-Use SQL Lite 
+Use SQL Lite.
 
 ### STEPS
 1. Installed NuGet package SQLite: `dotnet add package Microsoft.Data.Sqlite
@@ -169,5 +169,8 @@ dotnet add package Dapper`
 6. Register Database as Singleton, 
 
 
-### REVIEW
+### PROGRESS
+- CRUD operations now work successfully: I can now create, update, read and delete new Beer items, as well as TrolleyItems.
+
+- Database can be queried properly: I can now perform CRUD operations using a database directly, rather than in-memory data like previously.
 

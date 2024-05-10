@@ -6,9 +6,9 @@ namespace BeerAPI.Services
 {
     public class TrolleyService : ITrolleyService
     {
-        private readonly ITrolleyRepository _trolleyRepository; 
+        private readonly ITrolleyRepository _trolleyRepository;
 
-        // Constructor injection of the repo
+        // Constructor injection of the repository
         public TrolleyService(ITrolleyRepository trolleyRepository)
         {
             _trolleyRepository = trolleyRepository;
@@ -18,33 +18,39 @@ namespace BeerAPI.Services
         public void AddItem(Beer beer)
         {
             _trolleyRepository.AddBeerToTrolley(beer);
-            PrintTrolleyState();
+            PrintTrolleyState();  // Call to print the current state after adding an item
         }
 
         // REMOVE
         public bool RemoveItem(int beerId)
         {
-            return _trolleyRepository.RemoveBeerFromTrolley(beerId);
+            bool result = _trolleyRepository.RemoveBeerFromTrolley(beerId);
+            PrintTrolleyState();  // Call to print the current state after removing an item
+            return result;
         }
-/*
-        public int GetItemCount() => _trolleyRepository.Items.Sum(i => i.Quantity);*/
 
-        // GET
+        // GET the current state of the trolley
         public Trolley GetTrolley()
         {
-            return _trolleyRepository.GetTrolley();
-        }
+            var trolley = _trolleyRepository.GetTrolley();  // Fetch the trolley from the repository
 
-        // Logic to print the state of the trolley
+            // Log each item in the trolley for debugging
+            Console.WriteLine($"Current trolley count: {trolley.Items.Sum(i => i.Quantity)}");
+            foreach (var item in trolley.Items)
+            {
+                Console.WriteLine($"Beer ID: {item.Beer.Id}, Name: {item.Beer.Name}, Quantity: {item.Quantity}");
+            }
+
+            return trolley;
+        }
         private void PrintTrolleyState()
         {
-            var trolley = GetTrolley(); // get the trolley from the repository
-            Console.WriteLine($"Current trolley count: {trolley.Items.Sum(i => i.Quantity)}");
+            var trolley = GetTrolley();  // Fetch the trolley again
             foreach (var item in trolley.Items)
             {
                 Console.WriteLine($"Item: {item.Beer?.Name}, Quantity: {item.Quantity}");
             }
-
         }
     }
 }
+

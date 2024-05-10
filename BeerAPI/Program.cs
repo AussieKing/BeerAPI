@@ -17,7 +17,9 @@ builder.Services.AddControllers();
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddTransient<IValidator<Beer>, BeerValidator>();
 builder.Services.AddScoped<IBeerDescriptionService, BeerDescriptionService>();
-builder.Services.AddScoped<IBeerService, BeerService>();
+
+builder.Services.AddScoped<IBeerService>(provider => new BeerService(connectionString)); // updated the registration to inject the connectionString
+
 builder.Services.AddScoped<ITrolleyService, TrolleyService>();
 builder.Services.AddScoped<ITrolleyRepository>(provider => new TrolleyRepository(connectionString)); // Passing the connection string explicitly
 

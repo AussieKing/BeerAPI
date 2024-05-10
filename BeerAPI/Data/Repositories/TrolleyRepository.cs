@@ -31,19 +31,24 @@ namespace BeerAPI.Repositories
 
         public Trolley GetTrolley()
         {
-            // SQL to fetch trolley items with associated beer data
-            var sql = @"SELECT ti.Quantity, b.Id as BeerId, b.Name, b.Price
+            var sql = @"
+                SELECT ti.Quantity, b.Id AS BeerId, b.Name, b.Price 
                 FROM TrolleyItems ti 
-                JOIN Beers b ON ti.BeerId = b.Id;";
+                JOIN Beers b ON ti.BeerId = b.Id
+                WHERE ti.Quantity > 0;";
 
             var trolleyItems = _db.Query<TrolleyItem, Beer, TrolleyItem>(
                 sql,
                 (trolleyItem, beer) => {
+                    Console.WriteLine($"Fetched Beer: ID = {beer.Id}, Name = {beer.Name}, Quantity = {trolleyItem.Quantity}");  // Ensure IDs are logging correctly 
                     trolleyItem.Beer = beer;
                     return trolleyItem;
                 },
-                splitOn: "BeerId"  
+                splitOn: "BeerId"  // Ensures Dapper starts mapping Beer object from this column
             ).ToList();
+
+            Console.WriteLine($"Total items fetched: {trolleyItems.Count}");  // Log the count
+            trolleyItems.ForEach(item => Console.WriteLine($"Logged Item: Beer ID = {item.Beer?.Id}, Quantity = {item.Quantity}"));  // Log each item detail
 
             return new Trolley { Items = trolleyItems };
         }

@@ -1,51 +1,48 @@
 ﻿using BeerAPI.Models;
+using Dapper;
+using System.Collections.Generic;
+using System.Data;
+using Microsoft.Data.Sqlite;
+using System.Linq;
 
 namespace BeerAPI.Services
 {
     public class BeerService : IBeerService
     {
-        private List<Beer> beers = new List<Beer>
+        private readonly IDbConnection _db;
+
+        public BeerService(string connectionString)
         {
-                new Beer { Id = 1, Name = "Lager", Price = 5.99M },
-                new Beer { Id = 2, Name = "IPA", Price = 10.00M },
-                new Beer { Id = 3, Name = "Pale Ale", Price = 6.50M },
-                new Beer { Id = 4, Name = "Pilsner", Price = 6.50M },
-                new Beer { Id = 5, Name = "Sour", Price = 9.99M }
-           };
+            _db = new SqliteConnection(connectionString);
+        }
 
-        public Beer? GetBeerById(int beerId) => beers.FirstOrDefault(b => b.Id == beerId);
+        public Beer GetBeerById(int beerId)
+        {
+            return _db.Query<Beer>("SELECT * FROM Beers WHERE Id = @Id", new { Id = beerId }).FirstOrDefault();
+        }
 
-        public List<Beer> GetAllBeers() => beers;
+        public List<Beer> GetAllBeers()
+        {
+            return _db.Query<Beer>("SELECT * FROM Beers").ToList();
+        }
 
         public Beer AddBeer(Beer newBeer)
         {
-            var nextId = beers.Max(b => b.Id) + 1;
-            newBeer.Id = nextId;
-            beers.Add(newBeer);
+            var sql = @"INSERT INTO Beers (Name, Price) VALUES (@Name, @Price);
+                        SELECT CAST(last_insert_rowid() AS int);";
+            newBeer.Id = _db.Query<int>(sql, newBeer).Single();
             return newBeer;
         }
 
         public bool DeleteBeer(int id)
         {
-            var beer = GetBeerById(id);
-            if (beer != null)
-            {
-                beers.Remove(beer);
-                return true;
-            }
-            return false;
+            return _db.Execute("DELETE FROM Beers WHERE Id = @Id", new { Id = id }) > 0;
         }
 
         public void UpdateBeer(Beer updatedBeer)
         {
-            var beer = GetBeerById(updatedBeer.Id);
-            if (beer != null)
-            {
-                beer.Name = updatedBeer.Name;
-                beer.Price = updatedBeer.Price;
-                beer.PromoPrice = updatedBeer.PromoPrice;
-            }
+            var sql = @"UPDATE Beers SET Name = @Name, Price = @Price, PromoPrice = @PromoPrice WHERE Id = @Id";
+            _db.Execute(sql, updatedBeer);
         }
-
     }
 }

@@ -1,6 +1,8 @@
 ﻿using BeerAPI.Models;
 using BeerAPI.Repositories;
 using System.Linq;
+using System.Threading.Tasks;
+using System;
 
 namespace BeerAPI.Services
 {
@@ -15,24 +17,24 @@ namespace BeerAPI.Services
         }
 
         // ADD
-        public void AddItem(Beer beer)
+        public async Task AddItemAsync(Beer beer)
         {
-            _trolleyRepository.AddBeerToTrolley(beer);
-            PrintTrolleyState();  // Call to print the current state after adding an item
+            await _trolleyRepository.AddBeerToTrolleyAsync(beer);
+            await PrintTrolleyStateAsync();  // Call to print the current state after adding an item
         }
 
         // REMOVE
-        public bool RemoveItem(int beerId)
+        public async Task<bool> RemoveItemAsync(int beerId)
         {
-            bool result = _trolleyRepository.RemoveBeerFromTrolley(beerId);
-            PrintTrolleyState();  // Call to print the current state after removing an item
+            bool result = await _trolleyRepository.RemoveBeerFromTrolleyAsync(beerId);
+            await PrintTrolleyStateAsync();  // Call to print the current state after removing an item
             return result;
         }
 
         // GET the current state of the trolley
-        public Trolley GetTrolley()
+        public async Task<Trolley> GetTrolleyAsync()
         {
-            var trolley = _trolleyRepository.GetTrolley();  // Fetch the trolley from the repository
+            var trolley = await _trolleyRepository.GetTrolleyAsync();  // Fetch the trolley from the repository
 
             // Log each item in the trolley for debugging
             Console.WriteLine($"Current trolley count: {trolley.Items.Sum(i => i.Quantity)}");
@@ -43,9 +45,10 @@ namespace BeerAPI.Services
 
             return trolley;
         }
-        private void PrintTrolleyState()
+
+        private async Task PrintTrolleyStateAsync()
         {
-            var trolley = GetTrolley();  // Fetch the trolley again
+            var trolley = await GetTrolleyAsync();  // Fetch the trolley again
             foreach (var item in trolley.Items)
             {
                 Console.WriteLine($"Item: {item.Beer?.Name}, Quantity: {item.Quantity}");
@@ -53,4 +56,3 @@ namespace BeerAPI.Services
         }
     }
 }
-

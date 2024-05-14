@@ -169,6 +169,12 @@ This can now be done directly in a Database, rather than in-memory data like pre
 ## ISSUES
 - Issue 1: when deleting Beer, it lets me go in negative. TODO: stop at 0.
 ![image](https://github.com/AussieKing/BeerAPI/assets/126050763/b7faf5c8-7fcb-4246-93c4-6034f83b1e2d)
+#### TODO:
+- Practice using SQL Server
+- Refactor code to use right connection string (been using SQLite, so the connection string is now different for SQL Server )
+- 
+
+### PSEUDO CODING
 
 ### DEV SECTION 
 
@@ -178,18 +184,28 @@ This can now be done directly in a Database, rather than in-memory data like pre
 
 #### PSEUDO CODING
 
-
-#### STEPS TAKEN SO FAR
-1. Installed NuGet package SQLite: `dotnet add package Microsoft.Data.Sqlite
-dotnet add package Dapper`
-2. Connection string in appsettings.json (database in output directory)
-3. Create + Initalize db : create new folder (Data) with a dedicated Class (`DatabaseSetup.cs`) to initialise the db. Then go through usual steps (check for db file existance, create tables, etc)
-4. Create Repository classes (to bridge the app logic and the db access), use Repo interface for specific db operations. Then implement the interface in a class with Dapper (to execute SQL on the SqLite db), and finally place this in the Repositories folder (inisde the Data directory)
-5. Integrate the db operations in the app: change the service classes to use the db instead of the in app memory (inject Repository into the Service)
-6. Registered Database as Singleton, 
+### STEPS
+1. To transition to SQL Server from SQLite:
+- refactor `DatabaseSetup`
+- update `ConnectionStrings` in appsettings.json
+- update `connectionString` in Program.cs to use Entity Framework Core with SQL Server
+- register `DbContext` 
+- change the registering of connections
+- introduce the `ApplicationDbContext.cs`
+- create the `BeerRepository.cs` class to handle db operations for the `Beer` model, and the `IBeerRepository.cs` interface
+- modify the `BeerService` to accept `IBeerRepository` instead of the connection string for DB Browser (SQ Lite) (changing methods required! make sure to match)
+- update `TrolleyRepository` to accept `ApplicationDbContext` instead of the connection string for DB Browser (SQ Lite)
+- register `BeerRepository` in Program.cs
+- refactor `DatabaseSetup` to use `ApplicationDbContext`
+- refactor all tests to migrate from Dapper/SQLite to Entity Framework Core
 
 ## Author
 
-This application was written and developed by Freddy Dordoni.
+### PROGRESS
+- CRUD operations now work successfully: I can now create, update, read and delete new Beer items, as well as TrolleyItems.
+- Database can be queried properly: I can now perform CRUD operations using a database directly, rather than in-memory data like previously.- Database can be queried properly: I can now perform CRUD operations using a database directly, rather than in-memory data like previously.
+
+
+
 
 

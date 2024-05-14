@@ -1,57 +1,59 @@
 using BeerAPI.Models;
-using Dapper;
 using System.Collections.Generic;
-using System.Data;
-using Microsoft.Data.Sqlite;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using BeerAPI.Data;
 
 namespace BeerAPI.Repositories
 {
     public class TrolleyRepository : ITrolleyRepository
     {
-        private readonly IDbConnection _db;
+        private readonly ApplicationDbContext _context;
 
-        public TrolleyRepository(string connectionString)
+        public TrolleyRepository(ApplicationDbContext context)
         {
-            _db = new SqliteConnection(connectionString);
+            _context = context;
         }
 
-        public void AddBeerToTrolley(Beer beer)
+        public async Task AddBeerToTrolleyAsync(Beer beer)
         {
-            var sql = @"INSERT INTO TrolleyItems (BeerId, Quantity) VALUES (@BeerId, 1)
-                        ON CONFLICT(BeerId) DO UPDATE SET Quantity = Quantity + 1;";
-            _db.Execute(sql, new { BeerId = beer.Id });
+            var trolleyItem = await _context.TrolleyItems.Include(t => t.Beer).FirstOrDefaultAsync(t => t.Beer.Id == beer.Id);
+            if (trolleyItem != null)
+            {
+                trolleyItem.Quantity++;
+            }
+            else
+            {
+                await _context.TrolleyItems.AddAsync(new TrolleyItem { Beer = beer, Quantity = 1 });
+            }
+            _context.SaveChangesAsync();
         }
 
-        public bool RemoveBeerFromTrolley(int beerId)
+        public async Task<bool> RemoveBeerFromTrolleyAsync(int beerId)
         {
-            var sql = @"DELETE FROM TrolleyItems WHERE BeerId = @BeerId AND Quantity > 1;
-                        UPDATE TrolleyItems SET Quantity = Quantity - 1 WHERE BeerId = @BeerId;";
-            return _db.Execute(sql, new { BeerId = beerId }) > 0;
+            var trolleyItem = await _context.TrolleyItems.Include(t => t.Beer).FirstOrDefaultAsync(t => t.Beer.Id == beerId);
+            if (trolleyItem != null)
+            {
+                if (trolleyItem.Quantity > 1)
+                {
+                    trolleyItem.Quantity--;
+                }
+                else
+                {
+                    _context.TrolleyItems.Remove(trolleyItem);
+                }
+                _context.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
-        public Trolley GetTrolley()
+        public async Task<Trolley> GetTrolleyAsync()
         {
-            var sql = @"
-                SELECT ti.Quantity, b.Id AS BeerId, b.Name, b.Price 
-                FROM TrolleyItems ti 
-                JOIN Beers b ON ti.BeerId = b.Id
-                WHERE ti.Quantity > 0;";
-
-            var trolleyItems = _db.Query<TrolleyItem, Beer, TrolleyItem>(
-                sql,
-                (trolleyItem, beer) => {
-                    Console.WriteLine($"Fetched Beer: ID = {beer.Id}, Name = {beer.Name}, Quantity = {trolleyItem.Quantity}");  // Ensure IDs are logging correctly 
-                    trolleyItem.Beer = beer;
-                    return trolleyItem;
-                },
-                splitOn: "BeerId"  // Ensures Dapper starts mapping Beer object from this column
-            ).ToList();
-
-            Console.WriteLine($"Total items fetched: {trolleyItems.Count}");  // Log the count
-            trolleyItems.ForEach(item => Console.WriteLine($"Logged Item: Beer ID = {item.Beer?.Id}, Quantity = {item.Quantity}"));  // Log each item detail
+            var trolleyItems = await _context.TrolleyItems.Include(t => t.Beer).ToListAsync();
 
             return new Trolley { Items = trolleyItems };
         }
-
     }
 }

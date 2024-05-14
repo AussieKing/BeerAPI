@@ -1,16 +1,26 @@
+using System.Globalization;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using BeerAPI.Validators;
 using BeerAPI.Models;
 using BeerAPI.Services;
 using BeerAPI.Repositories;
+using Microsoft.EntityFrameworkCore;
+using BeerAPI.Data;
+using BeerAPI.Data.Interfaces;
+using BeerAPI.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Connection string configuration
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Data Source=BeerAPI.db";
+// Set the application to run in globalization-invariant mode
+AppContext.SetSwitch("System.Globalization.Invariant", true);
+
+// Set the invariant culture for the application
+CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+
+// Connection string configuration for SQL Server
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Server=(LocalDb)\\MSSQLLocalDB;Database=BeerAPI;Trusted_Connection=True;";
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -18,16 +28,21 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddTransient<IValidator<Beer>, BeerValidator>();
 builder.Services.AddScoped<IBeerDescriptionService, BeerDescriptionService>();
 
-builder.Services.AddScoped<IBeerService>(provider => new BeerService(connectionString)); // updated the registration to inject the connectionString
+// Register DbContext
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
+// Register Services and Repositories
+builder.Services.AddScoped<IBeerService, BeerService>();
 builder.Services.AddScoped<ITrolleyService, TrolleyService>();
-builder.Services.AddScoped<ITrolleyRepository>(provider => new TrolleyRepository(connectionString)); // Passing the connection string explicitly
+builder.Services.AddScoped<IBeerRepository, BeerRepository>();
+builder.Services.AddScoped<ITrolleyRepository, TrolleyRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Register DatabaseSetup as a singleton
-builder.Services.AddSingleton(new DatabaseSetup(connectionString));
+// Register DatabaseSetup as a scoped service
+builder.Services.AddScoped<DatabaseSetup>();
 
 var app = builder.Build();
 
@@ -42,8 +57,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
-// Ensure database is setup
-var databaseSetup = app.Services.GetRequiredService<DatabaseSetup>();
-databaseSetup.InitializeDatabase();
+// Ensure database is setup within a scope
+/*using (var scope = app.Services.CreateScope())
+{
+    var databaseSetup = scope.ServiceProvider.GetRequiredService<DatabaseSetup>();
+    databaseSetup.InitializeDatabase();
+}*/
 
 app.Run();

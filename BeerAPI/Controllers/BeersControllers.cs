@@ -1,87 +1,88 @@
 using Microsoft.AspNetCore.Mvc;
-using BeerAPI.Models; 
-using BeerAPI.Services; 
+using BeerAPI.Models;
+using BeerAPI.Services;
+using System.Threading.Tasks;
 
 namespace BeerAPI.Controllers
 {
-    [ApiController]  
-    [Route("api/[controller]")] 
-
-    //? Step 2: DATA STORE
-    public class BeersController : ControllerBase 
+    [ApiController]
+    [Route("api/[controller]")]
+    public class BeersController : ControllerBase
     {
         private readonly IBeerService _beerService;
         private readonly IBeerDescriptionService _beerDescriptionService;
 
-        //! INJECTION
         public BeersController(IBeerService beerService, IBeerDescriptionService beerDescriptionService)
         {
             _beerService = beerService;
             _beerDescriptionService = beerDescriptionService;
         }
 
-        // GET REQUEST: return of info given a BeerId
-        [HttpGet("{id}")] 
-        public IActionResult GetBeerById(int id) 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetBeerById(int id)
         {
-            var beer = _beerService.GetBeerById(id); 
-            if (beer == null) 
-            {
-                return NotFound(); 
-            }
-
-            var description = _beerDescriptionService.GetDescription(beer);
-            return Ok(new { Beer = beer, Description = description }); 
-        }        
-
-        // POST REQUEST: add a new beer to the list. 
-        // changed it so that if a beer is deleted , the next beer added will have an id that is one higher than the highest beer id.
-        [HttpPost] 
-        public ActionResult<Beer> AddBeer(Beer newBeer) 
-        {
-           if (!ModelState.IsValid)
-            {
-               return BadRequest(ModelState); 
-           }
-
-            var addedBeer = _beerService.AddBeer(newBeer);
-            return CreatedAtAction(nameof(GetBeerById), new { id = addedBeer.Id }, addedBeer);
-        }
-
-        // DELETE REQUEST: remove a beer from the list.
-        [HttpDelete("{id}")] 
-        public ActionResult DeleteBeer(int id)
-        {
-            var success = _beerService.DeleteBeer(id); 
-            if (!success) 
-            {
-                return NotFound(); 
-            }
-            
-            return NoContent(); 
-        }
-
-        // PUT REQUEST: update a beer's promo price, and its promo cannot be less than half of the normal price.
-        [HttpPut("{id}/promo-price")] 
-        public IActionResult UpdatePromoPrice(int id, [FromBody] PromoPriceUpdateRequest request)
-        {
-            var beer = _beerService.GetBeerById(id);
+            var beer = await _beerService.GetBeerByIdAsync(id);
             if (beer == null)
             {
                 return NotFound();
             }
+            return Ok(beer);
+        }
 
-            if (request.NewPromoPrice < beer.Price / 2) 
+        [HttpPost]
+        public async Task<IActionResult> AddBeer([FromBody] Beer beer)
+        {
+            if (beer == null)
             {
-                return BadRequest("Promotional price cannot be less than half of the normal price."); 
+                return BadRequest();
             }
+            var newBeer = await _beerService.AddBeerAsync(beer);
+            return CreatedAtAction(nameof(GetBeerById), new { id = newBeer.Id }, newBeer);
+        }
 
-            // Update the promo price (was missing)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBeer(int id)
+        {
+            var beer = await _beerService.GetBeerByIdAsync(id);
+            if (beer == null)
+            {
+                return NotFound();
+            }
+            await _beerService.DeleteBeerAsync(id);
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBeer(int id, [FromBody] Beer beer)
+        {
+            if (beer == null || beer.Id != id)
+            {
+                return BadRequest();
+            }
+            var existingBeer = await _beerService.GetBeerByIdAsync(id);
+            if (existingBeer == null)
+            {
+                return NotFound();
+            }
+            await _beerService.UpdateBeerAsync(beer);
+            return NoContent();
+        }
+
+        [HttpPatch("{id}/promoprice")]
+        public async Task<IActionResult> UpdatePromoPrice(int id, [FromBody] PromoPriceUpdateRequest request)
+        {
+            if (request == null || request.NewPromoPrice < 0)
+            {
+                return BadRequest();
+            }
+            var beer = await _beerService.GetBeerByIdAsync(id);
+            if (beer == null)
+            {
+                return NotFound();
+            }
             beer.PromoPrice = request.NewPromoPrice;
-
-            _beerService.UpdateBeer(beer);
-
-            return NoContent(); 
+            await _beerService.UpdateBeerAsync(beer);
+            return NoContent();
         }
     }
 }

@@ -11,8 +11,7 @@ namespace BeerAPI.Tests.Services
             // AAA method
 
             // Arrange
-            var beer = new Beer ();
-            beer.Name = "NotABeer";
+            var beer = new Beer { Name = "NotABeer" };
 
             // Act
             var sut = new BeerDescriptionService();

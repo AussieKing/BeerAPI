@@ -1,13 +1,15 @@
 ﻿using BeerAPI.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BeerAPI.Services
 {
     public interface IBeerService
     {
-        Beer? GetBeerById(int beerId);
-        List<Beer> GetAllBeers();
-        Beer AddBeer(Beer newBeer);
-        bool DeleteBeer(int id);
-        void UpdateBeer(Beer beer);
+        Task<Beer> GetBeerByIdAsync(int beerId);
+        Task<List<Beer>> GetAllBeersAsync();
+        Task<Beer> AddBeerAsync(Beer newBeer);
+        Task<bool> DeleteBeerAsync(int id);
+        Task UpdateBeerAsync(Beer updatedBeer);
     }
 }

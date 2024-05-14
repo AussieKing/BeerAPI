@@ -4,9 +4,9 @@ namespace BeerAPI.Repositories
 {
     public interface ITrolleyRepository
     {
-        void AddBeerToTrolley(Beer beer);
-        bool RemoveBeerFromTrolley(int beerId);
-        Trolley GetTrolley();
+        Task AddBeerToTrolleyAsync(Beer beer);
+        Task<bool> RemoveBeerFromTrolleyAsync(int beerId);
+        Task<Trolley> GetTrolleyAsync();
     }
 }
 

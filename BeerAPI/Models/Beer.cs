@@ -8,5 +8,3 @@ namespace BeerAPI.Models
         public decimal? PromoPrice { get; set; } 
     }
 }
-
-// removed Data annotation since we are using FluentValidation

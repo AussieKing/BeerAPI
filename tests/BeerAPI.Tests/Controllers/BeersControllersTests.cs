@@ -3,8 +3,9 @@ using BeerAPI.Models;
 using BeerAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using Xunit;
+using System.Threading.Tasks;
 
 namespace BeerAPI.Tests.Controllers
 {
@@ -21,15 +22,14 @@ namespace BeerAPI.Tests.Controllers
             _controller = new BeersController(_mockBeerService.Object, _mockBeerDescriptionService.Object);
         }
 
-
         [Fact]
-        public void GetBeerById_NonExistingId_ReturnsNotFoundResult()
+        public async Task GetBeerById_NonExistingId_ReturnsNotFoundResult()
         {
             // Arrange
-            _mockBeerService.Setup(service => service.GetBeerById(It.IsAny<int>())).Returns(default(Beer?));
+            _mockBeerService.Setup(service => service.GetBeerByIdAsync(It.IsAny<int>())).ReturnsAsync((Beer)null);
 
             // Act
-            var result = _controller.GetBeerById(999); // this ID doesn't exist
+            var result = await _controller.GetBeerById(999); // this ID doesn't exist
 
             // Assert
             Assert.IsType<NotFoundResult>(result);
@@ -39,24 +39,24 @@ namespace BeerAPI.Tests.Controllers
         }
 
         [Fact]
-        public void UpdatePromoPrice_ValidRequest_UpdatesPromoPrice()
+        public async Task UpdatePromoPrice_ValidRequest_UpdatesPromoPrice()
         {
             // Arrange
             var beerId = 1;
             var promoPriceUpdateRequest = new PromoPriceUpdateRequest { NewPromoPrice = 4.99M };
             var mockBeer = new Beer { Id = beerId, Name = "Lager", Price = 5.99M };
 
-            _mockBeerService.Setup(service => service.GetBeerById(beerId)).Returns(mockBeer);
-            _mockBeerService.Setup(service => service.UpdateBeer(It.IsAny<Beer>())).Callback<Beer>(beer =>
+            _mockBeerService.Setup(service => service.GetBeerByIdAsync(beerId)).ReturnsAsync(mockBeer);
+            _mockBeerService.Setup(service => service.UpdateBeerAsync(It.IsAny<Beer>())).Callback<Beer>(beer =>
             {
                 mockBeer.PromoPrice = beer.PromoPrice;
-            });
+            }).Returns(Task.CompletedTask);
 
             // Act
-            var result = _controller.UpdatePromoPrice(beerId, promoPriceUpdateRequest);
+            var result = await _controller.UpdatePromoPrice(beerId, promoPriceUpdateRequest);
 
             // Assert
-            _mockBeerService.Verify(service => service.UpdateBeer(It.Is<Beer>(b => b.PromoPrice == promoPriceUpdateRequest.NewPromoPrice)), Times.Once);
+            _mockBeerService.Verify(service => service.UpdateBeerAsync(It.Is<Beer>(b => b.PromoPrice == promoPriceUpdateRequest.NewPromoPrice)), Times.Once);
             Assert.IsType<NoContentResult>(result);
         }
     }

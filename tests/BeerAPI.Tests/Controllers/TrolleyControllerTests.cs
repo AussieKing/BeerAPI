@@ -4,53 +4,48 @@ using BeerAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
 using Moq;
-using System.Linq;
+using System.Threading.Tasks;
 using BeerAPI.Repositories;
 
 namespace BeerAPI.Tests.Controllers
 {
     public class TrolleyControllerTests
     {
-        private readonly TrolleyService _trolleyService1;
-        private readonly TrolleyService _trolleyService2;
-        private Mock<ITrolleyRepository> _mockRepository1;
-        private Mock<ITrolleyRepository> _mockRepository2;
+        private readonly Mock<IBeerService> _mockBeerService;
+        private readonly Mock<ITrolleyService> _mockTrolleyService;
+        private readonly TrolleyController _controller;
 
         public TrolleyControllerTests()
         {
-            _mockRepository1 = new Mock<ITrolleyRepository>();
-            _mockRepository2 = new Mock<ITrolleyRepository>();
-            _trolleyService1 = new TrolleyService(_mockRepository1.Object);
-            _trolleyService2 = new TrolleyService(_mockRepository2.Object);
+            _mockBeerService = new Mock<IBeerService>();
+            _mockTrolleyService = new Mock<ITrolleyService>();
+            _controller = new TrolleyController(_mockTrolleyService.Object, _mockBeerService.Object);
         }
 
         [Fact]
-        public void AddItemToTrolley_ShouldHandleMultipleInstancesSeparately()
-        {
-            // Act
-            _trolleyService1.AddItem(new Beer { Id = 1, Name = "Test Beer1", Price = 6.99M });
-            _trolleyService2.AddItem(new Beer { Id = 2, Name = "Test Beer2", Price = 7.99M });
-
-            // Assert
-            Assert.Single(_trolleyService1.GetTrolley().Items);
-            Assert.Single(_trolleyService2.GetTrolley().Items);
-            Assert.NotEqual(_trolleyService1.GetTrolley().Items.First().Beer.Id, _trolleyService2.GetTrolley().Items.First().Beer.Id);
-        }
-
-        [Fact]
-        public void RemoveItemFromTrolley_ShouldReflectIndividualUserChanges()
+        public async Task AddItemToTrolley_NonExistingBeerId_ReturnsNotFound()
         {
             // Arrange
-            _trolleyService1.AddItem(new Beer { Id = 1, Name = "Test Beer", Price = 6.99M });
-            _trolleyService2.AddItem(new Beer { Id = 2, Name = "Test Beer", Price = 7.99M });
+            _mockBeerService.Setup(service => service.GetBeerByIdAsync(It.IsAny<int>())).ReturnsAsync((Beer)null);
 
             // Act
-            var removeResultUser1 = _trolleyService1.RemoveItem(1);
+            var result = await _controller.AddItemToTrolley(999); // this ID doesn't exist
 
             // Assert
-            Assert.True(removeResultUser1);
-            Assert.Empty(_trolleyService1.GetTrolley().Items);
-            Assert.Single(_trolleyService2.GetTrolley().Items);
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
+        public async Task RemoveItemFromTrolley_NonExistingBeerId_ReturnsNotFound()
+        {
+            // Arrange
+            _mockTrolleyService.Setup(service => service.RemoveItemAsync(It.IsAny<int>())).ReturnsAsync(false);
+
+            // Act
+            var result = await _controller.RemoveItemFromTrolley(999); // this ID doesn't exist
+
+            // Assert
+            Assert.IsType<NotFoundResult>(result);
         }
     }
 }

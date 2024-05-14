@@ -1,48 +1,48 @@
 ﻿using BeerAPI.Models;
-using Dapper;
 using System.Collections.Generic;
 using System.Data;
 using Microsoft.Data.Sqlite;
 using System.Linq;
+using BeerAPI.Data.Interfaces;
 
 namespace BeerAPI.Services
 {
     public class BeerService : IBeerService
     {
-        private readonly IDbConnection _db;
+        private readonly IBeerRepository _beerRepository; // changed to IBeerRepository instead of IDbConnection
 
-        public BeerService(string connectionString)
+        public BeerService(IBeerRepository beerRepository) // constructor now accepting IBeerRepository instead of connecton string
         {
-            _db = new SqliteConnection(connectionString);
+            _beerRepository = beerRepository;
         }
 
-        public Beer GetBeerById(int beerId)
+        // Updating all methods to use the repository
+        public async Task<Beer> GetBeerByIdAsync(int beerId)
         {
-            return _db.Query<Beer>("SELECT * FROM Beers WHERE Id = @Id", new { Id = beerId }).FirstOrDefault();
+            return await _beerRepository.GetBeerByIdAsync(beerId);
         }
 
-        public List<Beer> GetAllBeers()
+        public async Task<List<Beer>> GetAllBeersAsync()
         {
-            return _db.Query<Beer>("SELECT * FROM Beers").ToList();
+            var beers = await _beerRepository.GetAllBeersAsync();
+            return new List<Beer>(beers);
         }
 
-        public Beer AddBeer(Beer newBeer)
+        public async Task<Beer> AddBeerAsync(Beer newBeer)
         {
-            var sql = @"INSERT INTO Beers (Name, Price) VALUES (@Name, @Price);
-                        SELECT CAST(last_insert_rowid() AS int);";
-            newBeer.Id = _db.Query<int>(sql, newBeer).Single();
+            await _beerRepository.AddBeerAsync(newBeer);
             return newBeer;
         }
 
-        public bool DeleteBeer(int id)
+        public async Task<bool> DeleteBeerAsync(int id)
         {
-            return _db.Execute("DELETE FROM Beers WHERE Id = @Id", new { Id = id }) > 0;
+            await _beerRepository.DeleteBeerAsync(id);
+            return true;
         }
 
-        public void UpdateBeer(Beer updatedBeer)
+        public async Task UpdateBeerAsync(Beer updatedBeer)
         {
-            var sql = @"UPDATE Beers SET Name = @Name, Price = @Price, PromoPrice = @PromoPrice WHERE Id = @Id";
-            _db.Execute(sql, updatedBeer);
+            await _beerRepository.UpdateBeerAsync(updatedBeer);
         }
     }
 }

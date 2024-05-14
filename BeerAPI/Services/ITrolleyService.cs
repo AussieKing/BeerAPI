@@ -1,12 +1,12 @@
 ﻿using BeerAPI.Models;
+using System.Collections.Generic;
 
 namespace BeerAPI.Services
 {
     public interface ITrolleyService
     {
-        void AddItem(Beer beer);
-        bool RemoveItem(int beerId);
-/*        int GetItemCount();
-*/        Trolley GetTrolley();
+        Task AddItemAsync(Beer beer);
+        Task<bool> RemoveItemAsync(int beerId);
+        Task<Trolley> GetTrolleyAsync();
     }
 }

@@ -19,7 +19,7 @@ namespace BeerAPI.Controllers
         }
 
         [HttpPost("{beerId}")]
-        public async Task<IActionResult> AddItemToTrolley(int beerId) 
+        public async Task<IActionResult> AddItemToTrolley(int beerId)
         {
             var beer = await _beerService.GetBeerByIdAsync(beerId);
             if (beer == null)
@@ -28,7 +28,8 @@ namespace BeerAPI.Controllers
             }
 
             await _trolleyService.AddItemAsync(beer);
-            return Ok(new { message = "Item added to trolley.", trolley = _trolleyService.GetTrolleyAsync() });
+            var trolley = await _trolleyService.GetTrolleyAsync();
+            return Ok(new { message = "Item added to trolley.", trolley });
         }
 
         [HttpDelete("{beerId}")]
@@ -37,8 +38,9 @@ namespace BeerAPI.Controllers
             bool itemRemoved = await _trolleyService.RemoveItemAsync(beerId);
             if (!itemRemoved)
             {
-                return NotFound(new {message = "Trolley is empty or item not found!" });
+                return NotFound(new { message = "Trolley is empty or item not found!" });
             }
+
             var trolley = await _trolleyService.GetTrolleyAsync();
             return Ok(new { message = "Item removed from trolley.", trolley });
         }

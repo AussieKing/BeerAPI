@@ -18,32 +18,36 @@ namespace BeerAPI.Repositories
 
         public async Task AddBeerToTrolleyAsync(Beer beer)
         {
-            var trolleyItem = await _context.TrolleyItems.Include(t => t.Beer).FirstOrDefaultAsync(t => t.Beer.Id == beer.Id);
+            var trolleyItem = await _context.TrolleyItems.FirstOrDefaultAsync(ti => ti.Beer.Id == beer.Id);
             if (trolleyItem != null)
             {
-                trolleyItem.Quantity++;
+                trolleyItem.Quantity +=1;
+                _context.TrolleyItems.Update(trolleyItem);
             }
             else
             {
-                await _context.TrolleyItems.AddAsync(new TrolleyItem { Beer = beer, Quantity = 1 });
+                _context.TrolleyItems.Add(new TrolleyItem { BeerId = beer.Id, Quantity = 1});
             }
-            _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> RemoveBeerFromTrolleyAsync(int beerId)
         {
-            var trolleyItem = await _context.TrolleyItems.Include(t => t.Beer).FirstOrDefaultAsync(t => t.Beer.Id == beerId);
+            var trolleyItem = await _context.TrolleyItems.FirstOrDefaultAsync(ti => ti.Beer.Id == beerId);
             if (trolleyItem != null)
             {
                 if (trolleyItem.Quantity > 1)
                 {
-                    trolleyItem.Quantity--;
+                    trolleyItem.Quantity -= 1; // removing by one, fixing the previous removing all
+                    _context.TrolleyItems.Update(trolleyItem);
+
                 }
                 else
                 {
-                    _context.TrolleyItems.Remove(trolleyItem);
+                    _context.TrolleyItems.Remove(trolleyItem); // and if it's 1, remove item
                 }
-                _context.SaveChangesAsync();
+                
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
@@ -51,9 +55,9 @@ namespace BeerAPI.Repositories
 
         public async Task<Trolley> GetTrolleyAsync()
         {
-            var trolleyItems = await _context.TrolleyItems.Include(t => t.Beer).ToListAsync();
-
+            var trolleyItems = await _context.TrolleyItems.Include(ti => ti.Beer).ToListAsync();
             return new Trolley { Items = trolleyItems };
         }
+
     }
 }

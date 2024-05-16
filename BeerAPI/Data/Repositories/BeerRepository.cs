@@ -33,9 +33,15 @@ namespace BeerAPI.Data.Repositories
 
         public async Task UpdateBeerAsync(Beer beer)
         {
+            var existingBeer = await _context.Beers.FindAsync(beer.Id);
+            if (existingBeer != null)
+            {
+                _context.Entry(existingBeer).State = EntityState.Detached; // Detach the existing entity to solve the tracking of multiple instances 9of the same entity)
+            }
             _context.Beers.Update(beer);
             await _context.SaveChangesAsync();
         }
+
 
         public async Task DeleteBeerAsync(int id)
         {

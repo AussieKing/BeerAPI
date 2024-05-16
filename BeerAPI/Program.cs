@@ -1,4 +1,3 @@
-using System.Globalization;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using BeerAPI.Validators;
@@ -12,15 +11,8 @@ using BeerAPI.Data.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Set the application to run in globalization-invariant mode
-AppContext.SetSwitch("System.Globalization.Invariant", true);
-
-// Set the invariant culture for the application
-CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
-
 // Connection string configuration for SQL Server
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Server=(LocalDb)\\MSSQLLocalDB;Database=BeerAPI;Trusted_Connection=True;";
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Server=(LocalDb)\\MSSQLLocalDB;Database=BeerAPI;Trusted_Connection=True;Persist Security Info=False;";
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -58,10 +50,11 @@ app.UseAuthorization();
 app.MapControllers();
 
 // Ensure database is setup within a scope
-/*using (var scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
     var databaseSetup = scope.ServiceProvider.GetRequiredService<DatabaseSetup>();
     databaseSetup.InitializeDatabase();
-}*/
+}
 
 app.Run();

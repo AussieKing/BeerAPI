@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using BeerAPI.Data;
+using System.Globalization;
 
 public class DatabaseSetup
 {
@@ -12,6 +13,6 @@ public class DatabaseSetup
 
     public void InitializeDatabase()
     {
-        _context.Database.EnsureCreated();
+        _context.Database.Migrate();
     }
 }

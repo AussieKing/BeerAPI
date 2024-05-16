@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using BeerAPI.Models;
 using BeerAPI.Services;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace BeerAPI.Controllers
 {
@@ -10,12 +11,10 @@ namespace BeerAPI.Controllers
     public class BeersController : ControllerBase
     {
         private readonly IBeerService _beerService;
-        private readonly IBeerDescriptionService _beerDescriptionService;
 
-        public BeersController(IBeerService beerService, IBeerDescriptionService beerDescriptionService)
+        public BeersController(IBeerService beerService)
         {
             _beerService = beerService;
-            _beerDescriptionService = beerDescriptionService;
         }
 
         [HttpGet("{id}")]
@@ -30,59 +29,82 @@ namespace BeerAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddBeer([FromBody] Beer beer)
+        public async Task<IActionResult> AddBeer(Beer beer)
         {
-            if (beer == null)
-            {
-                return BadRequest();
-            }
-            var newBeer = await _beerService.AddBeerAsync(beer);
-            return CreatedAtAction(nameof(GetBeerById), new { id = newBeer.Id }, newBeer);
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteBeer(int id)
-        {
-            var beer = await _beerService.GetBeerByIdAsync(id);
-            if (beer == null)
-            {
-                return NotFound();
-            }
-            await _beerService.DeleteBeerAsync(id);
-            return NoContent();
+            await _beerService.AddBeerAsync(beer);
+            return CreatedAtAction(nameof(GetBeerById), new { id = beer.Id }, beer);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBeer(int id, [FromBody] Beer beer)
+        public async Task<IActionResult> UpdateBeer(int id, Beer beer)
         {
-            if (beer == null || beer.Id != id)
+            if (id != beer.Id)
             {
                 return BadRequest();
             }
+
             var existingBeer = await _beerService.GetBeerByIdAsync(id);
             if (existingBeer == null)
             {
                 return NotFound();
             }
-            await _beerService.UpdateBeerAsync(beer);
+
+            try
+            {
+                await _beerService.UpdateBeerAsync(beer);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await BeerExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBeer(int id)
+        {
+            var existingBeer = await _beerService.GetBeerByIdAsync(id);
+            if (existingBeer == null)
+            {
+                return NotFound();
+            }
+
+            await _beerService.DeleteBeerAsync(id);
             return NoContent();
         }
 
         [HttpPatch("{id}/promoprice")]
         public async Task<IActionResult> UpdatePromoPrice(int id, [FromBody] PromoPriceUpdateRequest request)
         {
-            if (request == null || request.NewPromoPrice < 0)
-            {
-                return BadRequest();
-            }
             var beer = await _beerService.GetBeerByIdAsync(id);
             if (beer == null)
             {
                 return NotFound();
             }
+
             beer.PromoPrice = request.NewPromoPrice;
             await _beerService.UpdateBeerAsync(beer);
+
             return NoContent();
         }
+
+        private async Task<bool> BeerExists(int id)
+        {
+            var beer = await _beerService.GetBeerByIdAsync(id);
+            return beer != null;
+        }
+    }
+
+    public class PromoPriceUpdateRequest
+    {
+        public decimal? NewPromoPrice { get; set; }
     }
 }

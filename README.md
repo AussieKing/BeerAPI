@@ -4,7 +4,7 @@
 
 [![MIT License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-An API implementation of CRUD operations using C#.
+An API implementation of CRUD operations using C# in a SQL Server environment.
 
 ## Table of Contents
 
@@ -31,13 +31,15 @@ Also, Dependency Injection was added, by registering the `BeerValidator` so that
   - C#
   - .NET Core
   - ASP.NET Core
+  - SQL Server 
   - Visual Studio Code
   - Git
   - Insomnia 
+  - Swagger
 
 ## Usage
 
-This Application is not designed to work with a front-end. The backend is designed to be tested using Insomnia or Postman.
+This Application is not designed to work with a front-end at this stage. The backend is designed to be tested using SQL Server, and Swagger or Insomnia.
 
 ![Insomnia Screenshot](<Screenshot 2024-02-15 at 10.39.05 am.png>)
 
@@ -50,13 +52,20 @@ http://localhost:5244/
 
 ### Routes
 
+#### Beers 
 ```
-GET ..api/beers/{id} - returns the beer with the specified {id}
-POST ../api/beers - creates a user by providing Name, Price, and PromoPrice (optional)
-PUT ../api/api/beers/{id}/promo-price - updates a beer promo price by specifying their id
-DELETE ..api/beers/{id} - deletes a beer by specifying their id
+GET ../api/beers/{id} - returns the beer with the specified {id}
+POST ../api/beers - creates a beer by providing `name`, `price`, and `promoPrice` (optional)
+PATCH ../api/api/beers/{id}/promoprice - updates a beer promo price by specifying their id and passing a `newPromoPrice`
+PUT ../api/api/beers/{id} - updates a beer details by passing `id`, `name`, `price`, and `promoPrice` (optional)
+DELETE ..api/beers/{id} - deletes a beer by specifying their `id`
 ```
-
+#### Trolley 
+```
+GET ../api/trolley - returns the trolley items
+POST ../api/trolley{beerId} - adds a beer item with the given {id} to the trolley list
+DELETE ../api/trolley{beerId} - removes the beer with the given {id} from the trolley list
+```
 
 ## Installation
 
@@ -125,6 +134,8 @@ want.
 ## PROGRESS
 - CRUD operations now work successfully: I can now create, update, read and delete new Beer items, as well as TrolleyItems. 
 This can now be done directly in a Database, rather than in-memory data like previously.
+- Database can now be queried properly: I can now perform CRUD operations using a database directly, rather than in-memory data like previously.- Database can be queried properly: I can now perform CRUD operations using a database directly, rather than in-memory data like previously.
+
 
 ## SCREENSHOTS
 ### GET
@@ -163,26 +174,16 @@ This can now be done directly in a Database, rather than in-memory data like pre
 
 	DELETE a Beer Item in DB Browser
 <img width="294" alt="so's deleted" src="https://github.com/AussieKing/BeerAPI/assets/126050763/f9f2a725-0f96-4ee5-87b3-bebbd0055955">
-<img width="227" alt="so's gone" src="https://github.com/AussieKing/BeerAPI/assets/126050763/c9935720-86f8-4db8-b16d-28233c952e69">
 
 	
 ## ISSUES
-- Issue 1: when deleting Beer, it lets me go in negative. TODO: stop at 0.
-![image](https://github.com/AussieKing/BeerAPI/assets/126050763/b7faf5c8-7fcb-4246-93c4-6034f83b1e2d)
-#### TODO:
-- Practice using SQL Server
-- Refactor code to use right connection string (been using SQLite, so the connection string is now different for SQL Server )
 - 
 
 ### PSEUDO CODING
 
-### DEV SECTION 
-
 #### TODO:
 - Practice using LocalDb (ideally SQL Server, but I don't have access yet), which is a file based compact version of SQL Server.
 - Correct Issue 1 above for negative numbers in db.
-
-#### PSEUDO CODING
 
 ### STEPS
 1. To transition to SQL Server from SQLite:
@@ -200,12 +201,7 @@ This can now be done directly in a Database, rather than in-memory data like pre
 - refactor all tests to migrate from Dapper/SQLite to Entity Framework Core
 
 ## Author
-
-### PROGRESS
-- CRUD operations now work successfully: I can now create, update, read and delete new Beer items, as well as TrolleyItems.
-- Database can be queried properly: I can now perform CRUD operations using a database directly, rather than in-memory data like previously.- Database can be queried properly: I can now perform CRUD operations using a database directly, rather than in-memory data like previously.
-
-
+This App was created for training purposes only.
 
 
 

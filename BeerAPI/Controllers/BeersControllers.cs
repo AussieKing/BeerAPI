@@ -36,22 +36,21 @@ namespace BeerAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBeer(int id, Beer beer)
+        public async Task<IActionResult> UpdateBeer(int id, UpdateBeerRequest updateBeerRequest)
         {
-            if (id != beer.Id)
-            {
-                return BadRequest();
-            }
-
             var existingBeer = await _beerService.GetBeerByIdAsync(id);
             if (existingBeer == null)
             {
                 return NotFound();
             }
 
+            existingBeer.Name = updateBeerRequest.Name;
+            existingBeer.Price = updateBeerRequest.Price;
+            existingBeer.PromoPrice = updateBeerRequest.PromoPrice;
+
             try
             {
-                await _beerService.UpdateBeerAsync(beer);
+                await _beerService.UpdateBeerAsync(existingBeer);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -64,7 +63,10 @@ namespace BeerAPI.Controllers
                     throw;
                 }
             }
-
+            catch (Exception)
+            {
+                return StatusCode(500, "Error occurred when updating the beer");
+            }
             return NoContent();
         }
 

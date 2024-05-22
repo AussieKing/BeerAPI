@@ -1,4 +1,5 @@
 ﻿using BeerAPI.Models;
+using BeerAPI.Services;
 using System.Collections.Generic;
 using System.Data;
 using Microsoft.Data.Sqlite;
@@ -9,9 +10,9 @@ namespace BeerAPI.Services
 {
     public class BeerService : IBeerService
     {
-        private readonly IBeerRepository _beerRepository; // changed to IBeerRepository instead of IDbConnection
+        private readonly IBeerRepository _beerRepository;
 
-        public BeerService(IBeerRepository beerRepository) // constructor now accepting IBeerRepository instead of connecton string
+        public BeerService(IBeerRepository beerRepository) 
         {
             _beerRepository = beerRepository;
         }
@@ -36,13 +37,43 @@ namespace BeerAPI.Services
 
         public async Task<bool> DeleteBeerAsync(int id)
         {
+            var beer = await GetBeerByIdAsync(id);
+            if (beer == null)
+            {
+                throw new NotFoundException();
+            }
+
             await _beerRepository.DeleteBeerAsync(id);
             return true;
         }
 
-        public async Task UpdateBeerAsync(Beer updatedBeer)
+        // changed the UpdateBeerAsync to now handle exceptions better and more specifically
+        public async Task UpdateBeerAsync(int id, UpdateBeerRequest updateBeerRequest)
         {
-            await _beerRepository.UpdateBeerAsync(updatedBeer);
+            var existingBeer = await GetBeerByIdAsync(id);
+            if (existingBeer == null)
+            {
+                throw new NotFoundException();
+            }
+
+            existingBeer.Name = updateBeerRequest.Name;
+            existingBeer.Price = updateBeerRequest.Price;
+            existingBeer.PromoPrice = updateBeerRequest.PromoPrice;
+
+            await _beerRepository.UpdateBeerAsync(existingBeer);
+        }
+
+        // introducing the UpdatePromoPriceAsyn here
+        public async Task UpdatePromoPriceAsync(int id, decimal? newPromoPrice)
+        {
+            var existingBeer = await _beerRepository.GetBeerByIdAsync(id);
+            if (existingBeer == null)
+            {
+                throw new NotFoundException();
+            }
+
+            existingBeer.PromoPrice = newPromoPrice;
+            await _beerRepository.UpdateBeerAsync(existingBeer);
         }
     }
 }

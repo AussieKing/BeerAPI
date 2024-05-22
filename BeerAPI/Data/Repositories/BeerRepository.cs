@@ -33,24 +33,21 @@ namespace BeerAPI.Data.Repositories
 
         public async Task UpdateBeerAsync(Beer beer)
         {
-            var existingBeer = await _context.Beers.FindAsync(beer.Id);  // FIND
-            if (existingBeer != null)  // EXISTS
+            var existingBeer = await _context.Beers.FindAsync(beer.Id); 
+            if (existingBeer != null)  
             {
-                existingBeer.Name = beer.Name; // CHANGE before UPDATE
+                existingBeer.Name = beer.Name; 
                 existingBeer.Price = beer.Price;
                 existingBeer.PromoPrice = beer.PromoPrice;
 
-                _context.Beers.Update(existingBeer);  // UPDATE
-                await _context.SaveChangesAsync();          // SAVE     
+                _context.Beers.Update(existingBeer);  
+                await _context.SaveChangesAsync();             
              }
             else
             {
                 throw new Exception("Beer not found!");
             }
         } 
-        // solution was not to Detach, rather to only focus on the beer from the database. previously I was taking the beer object and ALSO trying to create a whole new beere and store in the same location (hence error 500)
-        //TRACKE WHERE THE ID IN THE PUT REQUEST COMES FROM (DOESN'T NEED TO BE A PART OF THE JSON)
-        // LOOK UP THROWING EXCEPTIONS , HERE FOR EXAMPLE THE EXCEPTION SHOULD HAVE BEEN A 404 (I COULD IGNORE , BUT THE END RESULT SHOULD BE 404)
 
         public async Task DeleteBeerAsync(int id)
         {

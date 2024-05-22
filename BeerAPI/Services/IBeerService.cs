@@ -10,6 +10,7 @@ namespace BeerAPI.Services
         Task<List<Beer>> GetAllBeersAsync();
         Task<Beer> AddBeerAsync(Beer newBeer);
         Task<bool> DeleteBeerAsync(int id);
-        Task UpdateBeerAsync(Beer updatedBeer);
+        Task UpdateBeerAsync(int id, UpdateBeerRequest updatedBeer);
+        Task UpdatePromoPriceAsync(int id, decimal? newPromoPrice);
     }
 }

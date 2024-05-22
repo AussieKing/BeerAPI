@@ -31,6 +31,11 @@ namespace BeerAPI.Services
 
         public async Task<Beer> AddBeerAsync(Beer newBeer)
         {
+            if (newBeer == null) 
+            {
+                throw new ArgumentNullException(nameof(newBeer));
+            }
+
             await _beerRepository.AddBeerAsync(newBeer);
             return newBeer;
         }

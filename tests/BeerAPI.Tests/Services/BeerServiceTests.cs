@@ -78,10 +78,16 @@ namespace BeerAPI.Tests.Services
             var beer = new Beer { Name = "Test Beer", Price = 5.99M };
             var addedBeer = await _service.AddBeerAsync(beer);
 
-            var updatedBeer = new Beer { Id = addedBeer.Id, Name = "Updated Test Beer", Price = 6.99M, PromoPrice = 4.99M };
+            // Creating an UpdateBeerRequest object
+            var updateBeerRequest = new UpdateBeerRequest
+            {
+                Name = "Updated Test Beer",
+                Price = 6.99M,
+                PromoPrice = 4.99M
+            };
 
             // Act
-            await _service.UpdateBeerAsync(updatedBeer);
+            await _service.UpdateBeerAsync(addedBeer.Id, updateBeerRequest);
 
             // Assert
             var resultBeer = await _service.GetBeerByIdAsync(addedBeer.Id);

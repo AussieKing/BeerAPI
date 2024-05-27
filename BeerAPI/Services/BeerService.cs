@@ -55,6 +55,11 @@ namespace BeerAPI.Services
         // changed the UpdateBeerAsync to now handle exceptions better and more specifically
         public async Task UpdateBeerAsync(int id, UpdateBeerRequest updateBeerRequest)
         {
+            if (updateBeerRequest == null)
+            {
+                throw new ArgumentNullException(nameof(updateBeerRequest)); // validating first
+            }
+
             var existingBeer = await GetBeerByIdAsync(id);
             if (existingBeer == null)
             {

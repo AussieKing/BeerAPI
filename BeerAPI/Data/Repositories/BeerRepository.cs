@@ -3,6 +3,7 @@ using BeerAPI.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BeerAPI.Services;
 
 namespace BeerAPI.Data.Repositories
 {
@@ -52,11 +53,12 @@ namespace BeerAPI.Data.Repositories
         public async Task DeleteBeerAsync(int id)
         {
             var beer = await _context.Beers.FindAsync(id);
-            if (beer != null)
+            if (beer == null)  // BETTER FOR NESTING PURPOSES 
             {
-                _context.Beers.Remove(beer);
-                await _context.SaveChangesAsync();
+                throw new NotFoundException(); // better error throwing
             }
+            _context.Beers.Remove(beer);
+            await _context.SaveChangesAsync();
         }
     }
 }

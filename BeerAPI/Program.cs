@@ -36,6 +36,11 @@ builder.Services.AddSwaggerGen();
 // Register DatabaseSetup as a scoped service
 builder.Services.AddScoped<DatabaseSetup>();
 
+// Adding Loggint to debug
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -53,6 +58,7 @@ app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
     var databaseSetup = scope.ServiceProvider.GetRequiredService<DatabaseSetup>();
     databaseSetup.InitializeDatabase();
 }

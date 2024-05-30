@@ -1,3 +1,4 @@
+﻿using System;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using BeerAPI.Validators;
@@ -8,59 +9,70 @@ using Microsoft.EntityFrameworkCore;
 using BeerAPI.Data;
 using BeerAPI.Data.Interfaces;
 using BeerAPI.Data.Repositories;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-var builder = WebApplication.CreateBuilder(args);
-
-// Connection string configuration for SQL Server
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Server=(LocalDb)\\MSSQLLocalDB;Database=BeerAPI;Trusted_Connection=True;Persist Security Info=False;";
-
-// Add services to the container.
-builder.Services.AddControllers();
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddTransient<IValidator<Beer>, BeerValidator>();
-builder.Services.AddScoped<IBeerDescriptionService, BeerDescriptionService>();
-
-// Register DbContext
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
-
-// Register Services and Repositories
-builder.Services.AddScoped<IBeerService, BeerService>();
-builder.Services.AddScoped<ITrolleyService, TrolleyService>();
-builder.Services.AddScoped<IBeerRepository, BeerRepository>();
-builder.Services.AddScoped<ITrolleyRepository, TrolleyRepository>();
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-// Register DatabaseSetup as a scoped service
-builder.Services.AddScoped<DatabaseSetup>();
-
-// Adding Loggint to debug
-builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
-
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+internal class Program
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        // Connection string configuration for SQL Server
+        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Server=(LocalDb)\\MSSQLLocalDB;Database=BeerAPI;Trusted_Connection=True;Persist Security Info=False;";
+
+        // Add services to the container.
+        builder.Services.AddControllers();
+        builder.Services.AddFluentValidationAutoValidation();
+        builder.Services.AddTransient<IValidator<Beer>, BeerValidator>();
+        builder.Services.AddScoped<IBeerDescriptionService, BeerDescriptionService>();
+
+        // Register DbContext
+        builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            options.UseSqlServer(connectionString));
+
+        // Register Services and Repositories
+        builder.Services.AddScoped<IBeerService, BeerService>();
+        builder.Services.AddScoped<ITrolleyService, TrolleyService>();
+        builder.Services.AddScoped<IBeerRepository, BeerRepository>();
+        builder.Services.AddScoped<ITrolleyRepository, TrolleyRepository>();
+
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+
+        // Register DatabaseSetup as a scoped service
+        builder.Services.AddScoped<DatabaseSetup>();
+
+        // Adding Logging to debug
+        builder.Logging.ClearProviders();
+        builder.Logging.AddConsole();
+
+        var app = builder.Build();
+
+        // Configure the HTTP request pipeline.
+        /*if (app.Environment.IsDevelopment())
+        {*/
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        /*}*/
+
+        app.UseStaticFiles();
+        app.UseHttpsRedirection();
+        app.UseAuthorization();
+        app.MapControllers();
+
+        // Ensure database is setup within a scope
+        using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            dbContext.Database.Migrate();
+            var databaseSetup = scope.ServiceProvider.GetRequiredService<DatabaseSetup>();
+            databaseSetup.InitializeDatabase();
+        }
+
+        // Simple default Route
+        app.MapGet("/", () => "Welcome to the Beer API! 🍺 🍻 ");
+
+        app.Run();
+    }
 }
-
-app.UseHttpsRedirection();
-app.UseAuthorization();
-app.MapControllers();
-
-// Ensure database is setup within a scope
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    dbContext.Database.Migrate();
-    var databaseSetup = scope.ServiceProvider.GetRequiredService<DatabaseSetup>();
-    databaseSetup.InitializeDatabase();
-}
-
-app.Run();

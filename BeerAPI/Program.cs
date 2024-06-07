@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using DotNetEnv;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using BeerAPI.Validators;
@@ -11,6 +12,7 @@ using BeerAPI.Data.Interfaces;
 using BeerAPI.Data.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.ApplicationInsights.Extensibility;
 
 internal class Program
 {
@@ -18,14 +20,24 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        // Loading .env variables
+        DotNetEnv.Env.Load();
+
+        // getting Application Insights Instrumentation Key and Connection String from .env
+        var appInsightsKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY");
+
+        // Add Application Insights
+        builder.Services.AddApplicationInsightsTelemetry(appInsightsKey);
+
         // Connection string configuration for SQL Server
-        var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? "Server=(LocalDb)\\MSSQLLocalDB;Database=BeerAPI;Trusted_Connection=True;Persist Security Info=False;";
+        var connectionString = $"Server=tcp:{Environment.GetEnvironmentVariable("DB_SERVER")},1433;Initial Catalog={Environment.GetEnvironmentVariable("DB_DATABASE")};Persist Security Info=False;User ID={Environment.GetEnvironmentVariable("DB_USER")};Password={Environment.GetEnvironmentVariable("DB_PASSWORD")};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         // Add services to the container.
         builder.Services.AddControllers();
         builder.Services.AddFluentValidationAutoValidation();
         builder.Services.AddTransient<IValidator<Beer>, BeerValidator>();
         builder.Services.AddScoped<IBeerDescriptionService, BeerDescriptionService>();
+
 
         // Register DbContext
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -52,8 +64,8 @@ internal class Program
         // Configure the HTTP request pipeline.
         /*if (app.Environment.IsDevelopment())
         {*/
-            app.UseSwagger();
-            app.UseSwaggerUI();
+        app.UseSwagger();
+        app.UseSwaggerUI();
         /*}*/
 
         app.UseStaticFiles();

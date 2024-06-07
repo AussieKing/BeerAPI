@@ -1,0 +1,43 @@
+﻿# Ignore the .env file with environment variables
+.env
+
+# Ignore the build outputs
+bin/
+obj/
+
+# Ignore .NET user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Ignore Rider specific files
+.idea/
+
+# Ignore Visual Studio specific files
+.vscode/
+.vscode/*
+
+# Ignore packages folder
+packages/
+
+# Ignore logs and temp files
+*.log
+*.tlog
+*.temp
+
+# Ignore project-related temporary files
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Ignore NPM files (if applicable)
+node_modules/
+
+# Ignore JetBrains Rider IDE settings
+.idea/
+
+# Ignore application-specific files
+BeerAPI.db
+BeerAPI.sqbpro
+*.db-journal

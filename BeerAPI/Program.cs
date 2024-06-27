@@ -1,18 +1,18 @@
-﻿using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+﻿using BeerAPI.Data;
+using BeerAPI.Data.Interfaces;
+using BeerAPI.Data.Repositories;
+using BeerAPI.Models;
+using BeerAPI.Repositories;
+using BeerAPI.Services;
+using BeerAPI.Validators;
 using DotNetEnv;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using BeerAPI.Validators;
-using BeerAPI.Models;
-using BeerAPI.Services;
-using BeerAPI.Repositories;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.EntityFrameworkCore;
-using BeerAPI.Data;
-using BeerAPI.Data.Interfaces;
-using BeerAPI.Data.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.ApplicationInsights.Extensibility;
 
 internal class Program
 {
@@ -27,10 +27,12 @@ internal class Program
         var appInsightsKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY");
 
         // Add Application Insights
-        builder.Services.AddApplicationInsightsTelemetry(appInsightsKey);
+        builder.Services.AddApplicationInsightsTelemetry();
 
         // Connection string configuration for SQL Server
-        var connectionString = $"Server=tcp:{Environment.GetEnvironmentVariable("DB_SERVER")},1433;Initial Catalog={Environment.GetEnvironmentVariable("DB_DATABASE")};Persist Security Info=False;User ID={Environment.GetEnvironmentVariable("DB_USER")};Password={Environment.GetEnvironmentVariable("DB_PASSWORD")};MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        var connectionString =
+            builder.Configuration.GetConnectionString("DefaultConnection")
+            ?? "Server=(LocalDb)\\MSSQLLocalDB;Database=BeerAPI;Trusted_Connection=True;Persist Security Info=False;";
 
         // Add services to the container.
         builder.Services.AddControllers();
@@ -38,16 +40,19 @@ internal class Program
         builder.Services.AddTransient<IValidator<Beer>, BeerValidator>();
         builder.Services.AddScoped<IBeerDescriptionService, BeerDescriptionService>();
 
-
         // Register DbContext
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(connectionString));
+            options.UseSqlServer(connectionString)
+        );
 
         // Register Services and Repositories
         builder.Services.AddScoped<IBeerService, BeerService>();
         builder.Services.AddScoped<ITrolleyService, TrolleyService>();
         builder.Services.AddScoped<IBeerRepository, BeerRepository>();
         builder.Services.AddScoped<ITrolleyRepository, TrolleyRepository>();
+
+        // Register the WeatherService
+        builder.Services.AddHttpClient<WeatherService>();
 
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -56,8 +61,8 @@ internal class Program
         builder.Services.AddScoped<DatabaseSetup>();
 
         // Adding Logging to debug
-        builder.Logging.ClearProviders();
-        builder.Logging.AddConsole();
+        /*        builder.Logging.ClearProviders();
+                builder.Logging.AddConsole();*/
 
         var app = builder.Build();
 

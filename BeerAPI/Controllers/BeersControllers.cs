@@ -11,15 +11,18 @@ namespace BeerAPI.Controllers
     public class BeersController : ControllerBase
     {
         private readonly IBeerService _beerService;
+        private readonly ILogger<BeersController> logger;
 
-        public BeersController(IBeerService beerService)
+        public BeersController(IBeerService beerService, ILogger<BeersController> logger)
         {
             _beerService = beerService;
+            this.logger = logger;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetBeerById(int id)
         {
+            logger.LogInformation("logging GetBeerById method has been called and beer {BeerId} is correct", id);
             var beer = await _beerService.GetBeerByIdAsync(id);
             if (beer == null)
             {

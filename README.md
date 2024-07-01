@@ -185,7 +185,8 @@ Lastly, the new `WeatherResponse` model defines the structure of the API respons
 <img width="294" alt="so's deleted" src="https://github.com/AussieKing/BeerAPI/assets/126050763/f9f2a725-0f96-4ee5-87b3-bebbd0055955">
 
 ### RECOMMEND A BEER
-	Recommends a Beer Item based on weather data fetched from OpenWeather API.
+	RECOMMENDS a Beer Item based on weather data fetched from OpenWeather API.
+<img width="662" alt="beer-recommend" src="https://github.com/AussieKing/BeerAPI/assets/126050763/82385c4b-0b3e-4294-b330-3d41d57c4787">
 
 	
 

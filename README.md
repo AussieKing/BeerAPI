@@ -36,6 +36,7 @@ Also, Dependency Injection was added, by registering the `BeerValidator` so that
   - Git
   - Insomnia 
   - Swagger
+  - OpenWeather 
 
 ## Usage
 
@@ -65,6 +66,10 @@ DELETE ..api/beers/{id} - deletes a beer by specifying their `id`
 GET ../api/trolley - returns the trolley items
 POST ../api/trolley{beerId} - adds a beer item with the given {id} to the trolley list
 DELETE ../api/trolley{beerId} - removes the beer with the given {id} from the trolley list
+```
+#### Recommend Beer
+```
+GET ../BeerRecommendation/recommend - returns a beer based on fetched weather data
 ```
 
 ## Installation
@@ -132,9 +137,13 @@ want.
 
 
 ## PROGRESS
-- CRUD operations now work successfully: I can now create, update, read and delete new Beer items, as well as TrolleyItems. 
-This can now be done directly in a Database, rather than in-memory data like previously.
-- Database can now be queried properly: I can now perform CRUD operations using a database directly, rather than in-memory data like previously.- Database can be queried properly: I can now perform CRUD operations using a database directly, rather than in-memory data like previously.
+- New functionality of Recommending Beers based on weather data (pulled from OpenWeather API) is now working properly: 
+This was achieved by creating a new controller `BeerRecommendationController ` that handles the HTTP requests for recommendations. 
+This controller fetched the temperature data (`main.temp`) from the OpenWeather API, deserializes the JSON response into a WeatherResponse object, and uses
+`RecommendBeerBasedOnWeather` method to make the recommendation.
+The new `WeatherService` handles the business logic for making the HTTP request, and retrieve the weather data.
+Lastly, the new `WeatherResponse` model defines the structure of the API response (`Main` and `Temp` store the temperature data).
+`Program.cs` was modfied to include configuration and Dependency Injection for `WeatherService`.
 
 
 ## SCREENSHOTS
@@ -175,30 +184,21 @@ This can now be done directly in a Database, rather than in-memory data like pre
 	DELETE a Beer Item in DB Browser
 <img width="294" alt="so's deleted" src="https://github.com/AussieKing/BeerAPI/assets/126050763/f9f2a725-0f96-4ee5-87b3-bebbd0055955">
 
+### RECOMMEND A BEER
+	Recommends a Beer Item based on weather data fetched from OpenWeather API.
+
 	
+
 ## ISSUES
-- 
+
 
 ### PSEUDO CODING
 
 #### TODO:
-- Practice using LocalDb (ideally SQL Server, but I don't have access yet), which is a file based compact version of SQL Server.
-- Correct Issue 1 above for negative numbers in db.
+
 
 ### STEPS
-1. To transition to SQL Server from SQLite:
-- refactor `DatabaseSetup`
-- update `ConnectionStrings` in appsettings.json
-- update `connectionString` in Program.cs to use Entity Framework Core with SQL Server
-- register `DbContext` 
-- change the registering of connections
-- introduce the `ApplicationDbContext.cs`
-- create the `BeerRepository.cs` class to handle db operations for the `Beer` model, and the `IBeerRepository.cs` interface
-- modify the `BeerService` to accept `IBeerRepository` instead of the connection string for DB Browser (SQ Lite) (changing methods required! make sure to match)
-- update `TrolleyRepository` to accept `ApplicationDbContext` instead of the connection string for DB Browser (SQ Lite)
-- register `BeerRepository` in Program.cs
-- refactor `DatabaseSetup` to use `ApplicationDbContext`
-- refactor all tests to migrate from Dapper/SQLite to Entity Framework Core
+
 
 ## Author
 This App was created for training purposes only.

@@ -27,12 +27,17 @@ internal class Program
         var appInsightsKey = Environment.GetEnvironmentVariable("APPINSIGHTS_INSTRUMENTATIONKEY");
 
         // Add Application Insights
-        builder.Services.AddApplicationInsightsTelemetry();
+        builder.Services.AddApplicationInsightsTelemetry(appInsightsKey);
 
         // Connection string configuration for SQL Server
         var connectionString =
             builder.Configuration.GetConnectionString("DefaultConnection")
             ?? "Server=(LocalDb)\\MSSQLLocalDB;Database=BeerAPI;Trusted_Connection=True;Persist Security Info=False;";
+
+        // Register the configuration class for the API Weather
+        builder.Services.Configure<WeatherApiSettings>(
+            builder.Configuration.GetSection("WeatherApiSettings")
+        );
 
         // Add services to the container.
         builder.Services.AddControllers();
@@ -42,7 +47,17 @@ internal class Program
 
         // Register DbContext
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(connectionString)
+            options.UseSqlServer(
+                connectionString,
+                sqlServerOptionsAction: sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 10,
+                        maxRetryDelay: TimeSpan.FromSeconds(30),
+                        errorNumbersToAdd: null
+                    );
+                }
+            )
         );
 
         // Register Services and Repositories
@@ -60,18 +75,11 @@ internal class Program
         // Register DatabaseSetup as a scoped service
         builder.Services.AddScoped<DatabaseSetup>();
 
-        // Adding Logging to debug
-        /*        builder.Logging.ClearProviders();
-                builder.Logging.AddConsole();*/
-
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
-        /*if (app.Environment.IsDevelopment())
-        {*/
         app.UseSwagger();
         app.UseSwaggerUI();
-        /*}*/
 
         app.UseStaticFiles();
         app.UseHttpsRedirection();

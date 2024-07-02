@@ -37,18 +37,13 @@ namespace BeerAPI.Controllers
         {
             // harcoded recommends using weather API documentation: main.temp Temperature.
             // Unit Default: Kelvin, Metric: Celsius, Imperial: Fahrenheit
-            if (weather.Main.Temp > 27)
+            return weather.Main.Temp switch
             {
-                return "a refreshing Lager";
-            }
-            else if (weather.Main.Temp > 10)
-            {
-                return "a smooth Pale Ale";
-            }
-            else
-            {
-                return "A robust stout";
-            }
+                > 27 => "Hot day calls for a fruity Sour",
+                > 20 => "Warm day is perfect for a refreshing Lager",
+                > 10 => "Chilled weather calls for a smooth Pale Ale",
+                _ => "Cold weather is great for a robus Stout",
+            };
         }
     }
 }
